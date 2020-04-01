@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body
+            {
+            font-family:tahoma
+            }
+        /* headerDiv class - div for pages header, scrolls down with  */
+        .headerDiv{
+            background: #1abc9c;
+            color: white;
+            font-size: 30px;
+            width: 100%;
+            display: block;
+            position:sticky;
+            text-align:center;
+            top:0;
+            }
+        /* maindDiv class- div for containing rest of html page elements*/
+        .mainDiv{
+            margin:5px;
+            padding:5px;
+        }
+        /* homeLink - ahref for link to home, want it perfectly centered*/
+        #homeLink{
+            position:relative;
+        }
+
+        /* loginLink - ahref stays in */
+        #loginLink{
+            position:absolute;
+            left: 1%;
+        }
+        #logoutLink{
+            position:absolute;
+            right: 1%;
+        }
+        .headerP{
+            padding:0;
+            margin:0;
+            text-align: center;
+            }
+        html{ padding:0;
+            margin:0;
+            }
+        body{ padding:0;
+            margin:0;
+            }
+            * {box-sizing: border-box}
+
+        /* loginContainer - div for... formerly  #f2f2f2; */
+        #loginContainer {
+          position: relative;
+          border-radius: 5px;
+          background-color:#343d46;
+          padding: 20px 0 30px 0;
+        }
+
+        /* style inputs and link buttons */
+        input,
+        .btn {
+          width: 100%;
+          padding: 12px;
+          border: none;
+          border-radius: 4px;
+          margin: 5px 0;
+          opacity: 0.85;
+          display: inline-block;
+          font-size: 17px;
+          line-height: 20px;
+          text-decoration: none; /* remove underline from anchors */
+        }
+
+        input:hover,
+        .btn:hover {
+          opacity: 1;
+        }
+
+        /* submit button */
+        input[type=submit] {
+          background-color: #1abc9c;
+          color: white;
+          cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+          background-color: #008080;
+        }
+
+        /* Two columns will take up half the width and float, then clear to place them side by side */
+        .col {
+          width: 50%;
+          margin: auto;
+          padding: 0 50px;
+          margin-top: 6px;
+          float:left;
+        }
+        #clear {
+            clear: both;
+        }
+        #loginh2 {
+            text-align:center;
+            background-color: white;
+            color: #1abc9c;
+            width:25%;
+            border:2px solid #bababa;
+            display: block;
+            margin-left: auto;
+            margin-right: auto ;
+            border-radius: 15px 50px 30px; 
+        }
+
+        #signUpBtn{
+            background-color: #eca657;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            margin: 5px 0;
+            opacity: 0.85;
+            display: inline-block;
+            font-size: 17px;
+            line-height: 20px;
+            text-decoration: none;
+        }
+
+        #forgotPwdBtn{
+            background-color: #c695c6;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            margin: 5px 0;
+            opacity: 0.85;
+            display: inline-block;
+            font-size: 17px;
+            line-height: 20px;
+            text-decoration: none;
+        }
+
+        
+
+    </style>
+    <title>Generic Site HomePage</title>
+</head>
+<body>
+    <div class="headerDiv">
+
+        <a id="homeLink" href="home.html">Home</a>
+        <a id="logoutLink" href="home.html">Logout</a>
+        <p class="headerP">Hello Toolbar</p>
+    </div>
+
+    <div class="mainDiv">
+         <div id="loginContainer">
+            <div class="row">
+                    <h2 id="loginh2">Login below or signup</h2>
+              <div class="col">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="submit" value="Login">
+              </div>
+              <div class="col">
+                    <button id="signUpBtn">Sign Up</button>
+                    <button id="forgotPwdBtn">Forgot Password</button>
+              </div>
+              <div id="clear"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script>
+
+</script>
+</html>
