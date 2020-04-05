@@ -157,9 +157,9 @@
             <div class="row">
                     <h2 id="loginh2">Login below or signup</h2>
               <div class="col">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="submit" value="Login">
+                <input id="username" type="text" name="username" placeholder="Username" required>
+                <input id="password" type="password" name="password" placeholder="Password" required>
+                <input id="loginBtn" type="submit" value="Login" onclick="login()">
               </div>
               <div class="col">
                     <button id="signUpBtn">Sign Up</button>
@@ -171,7 +171,20 @@
 
     </div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
+    let someUser = {"keith" : "123"};
+    login = function(){
+        username = document.getElementById("username").value;
+        password = document.getElementById("password").value;
+        if( someUser[username] === password ){
+            alert("YOU LOGGED IN!");
+        }
+        else{
+            alert("Your username or password was incorrect.")
+        }
+    }
+
 
 </script>
 </html>
