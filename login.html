@@ -87,7 +87,6 @@
         input[type=submit]:hover {
           background-color: #008080;
         }
-
         /* Two columns will take up half the width and float, then clear to place them side by side */
         .col {
           width: 50%;
@@ -157,9 +156,9 @@
             <div class="row">
                     <h2 id="loginh2">Login below or signup</h2>
               <div class="col">
-                <input id="username" type="text" name="username" placeholder="Username" required>
-                <input id="password" type="password" name="password" placeholder="Password" required>
-                <input id="loginBtn" type="submit" value="Login" onclick="login()">
+                    <input id="useremail" type="email" name="useremail" placeholder="Email Address" required>
+                    <input id="password" type="password" name="password" placeholder="Password" required>
+                    <input id="loginBtn" type="submit" value="Login" onclick="login()">
               </div>
               <div class="col">
                     <button id="signUpBtn">Sign Up</button>
@@ -173,17 +172,25 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-    let someUser = {"keith" : "123"};
+    let someUser = {"keith@email.com" : "123"};
     login = function(){
-        username = document.getElementById("username").value;
+        username = document.getElementById("useremail").value;
         password = document.getElementById("password").value;
         if( someUser[username] === password ){
-            alert("YOU LOGGED IN!");
+            window.location="home.html";
+            return false;
         }
         else{
             alert("Your username or password was incorrect.")
         }
     }
+    forgotPass = function(){
+        alert("Sorry to hear that! \nUnfortunately for you this feature hasn't been added yet.")
+    }
+    signUp = function(){
+        alert("We're not accepting new user's right now, try again some time!")
+    }
+
 
 
 </script>
