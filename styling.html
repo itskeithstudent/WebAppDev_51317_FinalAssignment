@@ -86,8 +86,25 @@
         input[type=submit]:hover {
           background-color: #008080;
         }
+
+        textarea{
+            width:100%;
+            height:10em;
+        }
+
+        .row{
+            width:100%;
+            text-align: center;
+        }
+        .singleCol{
+            width: 100%;
+            margin:auto;
+            padding: 0 50px;
+            margin-top: 6px;
+            float:left;
+        }
         /* Two columns will take up half the width and float, then clear to place them side by side */
-        .col {
+        .doublecol {
           width: 50%;
           margin: auto;
           padding: 0 50px;
@@ -152,15 +169,23 @@
 
     <div class="mainDiv">
 
-        <p>Here is some sample Text</p>
+        <p id="userEntryText">Here is some sample Text</p>
         <div id="loginContainer">
-                <div class="col">
-                    <input id="headerColourTextBox" type="text">
-                    <button id="headerColourBtn" onclick="changeHeaderColour()">Change Colour</button>
+                <div class="row">
+                    <div class="singleCol">
+                        <textarea id="updateUserTextArea">Emily is great, I love her <3</textarea>
+                        <button id="updateText" onclick="changeText()">Update the above text</button>
+                    </div>
                 </div>
-                <div class="col">
-                    <input id="fontSizeTextBox" type="text">
-                    <button id="fontSizeBtn" onclick="changeFontSize()">Change Text Size</button>
+                <div class="row">
+                    <div class="doublecol">
+                        <input id="headerColourTextBox" type="text">
+                        <button id="headerColourBtn" onclick="changeHeaderColour()">Change Colour</button>
+                    </div>
+                    <div class="doublecol">
+                        <input id="fontSizeTextBox" type="text">
+                        <button id="fontSizeBtn" onclick="changeFontSize()">Change Text Size</button>
+                    </div>
                 </div>
                 <div id="clear"></div>
         </div>
@@ -171,15 +196,19 @@
 
     changeHeaderColour = function(){
         userColour = document.getElementById("headerColourTextBox").value;
-        document.getElementById("pageHeaderDiv").style.backgroundColor = userColour;
+        document.getElementById("userEntryText").style.backgroundColor = userColour;
     }
     changeFontSize = function(){
         userTextSize = document.getElementById("fontSizeTextBox").value;
-        document.body.style.fontSize = userTextSize;
+        document.getElementById("userEntryText").style.fontSize = userTextSize;
         //document.getElementById('pageHeaderDiv').style.fontSize = userTextSize;
     }
 
-    
+    changeText = function(){
+        userText = document.getElementById("updateUserTextArea").value;
+        console.log(userText)
+        document.getElementById("userEntryText").innerHTML = userText;
+    }
 
 </script>
 </html>
