@@ -169,11 +169,11 @@
 
     <div class="mainDiv">
 
-        <p id="userEntryText">Here is some sample Text</p>
+        <p id="userEnteredText">Here is some sample Text, update below to replace with your preference.</p>
         <div id="loginContainer">
                 <div class="row">
                     <div class="singleCol">
-                        <textarea id="updateUserTextArea">Emily is great, I love her <3</textarea>
+                        <textarea id="updateUserTextArea"></textarea>
                         <button id="updateText" onclick="changeText()">Update the above text</button>
                     </div>
                 </div>
@@ -187,28 +187,73 @@
                         <button id="fontSizeBtn" onclick="changeFontSize()">Change Text Size</button>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="doublecol">
+                        <input id="fontColourTextBox" type="text">
+                        <button id="fontColourTextBtn" onclick="changeFontColour()">Change Font Colour</button>
+                    </div>
+                    <div class="doublecol">
+                        <input id="fontSizeTextBox" type="text">
+                        <button id="fontSizeBtn" onclick="changeFontSize()">Change Text Size</button>
+                    </div>
+                </div>
                 <div id="clear"></div>
+                <div class="row">
+                    <div class="singleCol">
+                        <button id="resetToDefaultBtn" onclick="resetToDefault()">Reset above to default</button>
+                    </div>
+                </div>
         </div>
     </div>
     
 </body>
 <script>
 
+    let defaultTextSize = 'initial'; //in actuality is 16px
+    let defaultTextBackgroundColour =  'initial'; // transparent
+    let defaultText = 'Here is some sample Text, update below to replace with your preference.';
+    let defaultTextColour = "initial"; //black
+    let defaultFontStyle = "initial";
+
+    let customisedTextField = document.getElementById("userEnteredText");
+    let userEntryTextField = document.getElementById("updateUserTextArea");
+    let userEntryFontBackgroundColourField = document.getElementById("headerColourTextBox");
+    let userEntryFontSizeField = document.getElementById("fontSizeTextBox");
+    let userEntryFontColourField = document.getElementById("fontColourTextBox");
+
+    console.log(userEnteredText.style.backgroundColor);
+
     changeHeaderColour = function(){
-        userColour = document.getElementById("headerColourTextBox").value;
-        document.getElementById("userEntryText").style.backgroundColor = userColour;
+        userColour = userEntryFontBackgroundColourField.value;
+        customisedTextField.style.backgroundColor = userColour;
     }
     changeFontSize = function(){
-        userTextSize = document.getElementById("fontSizeTextBox").value;
-        document.getElementById("userEntryText").style.fontSize = userTextSize;
+        userTextSize = userEntryFontSizeField.value;
+        customisedTextField.style.fontSize = userTextSize;
         //document.getElementById('pageHeaderDiv').style.fontSize = userTextSize;
     }
 
-    changeText = function(){
-        userText = document.getElementById("updateUserTextArea").value;
-        console.log(userText)
-        document.getElementById("userEntryText").innerHTML = userText;
+    changeFontColour = function(){
+        fontColour = userEntryFontColourField.value;
+        console.log(fontColour)
+        customisedTextField.style.color = fontColour;
+
     }
+
+    changeText = function(){
+        userText = userEntryTextField.value;
+        //console.log(userText)
+        customisedTextField.innerHTML = userText;
+    }
+
+    resetToDefault = function(){
+        customisedTextField.innerHTML = defaultText;
+        customisedTextField.style.fontSize = defaultTextSize;
+        customisedTextField.style.backgroundColor = defaultTextBackgroundColour;
+        customisedTextField.colour = defaultTextColour;
+        customisedTextField.fontStyle = defaultFontStyle;
+    }
+
 
 </script>
 </html>
