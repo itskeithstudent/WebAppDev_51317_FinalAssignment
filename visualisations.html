@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body
+            {
+            font-family:tahoma
+            }
+        /* headerDiv class - div for pages header, scrolls down with  */
+        .headerDiv{
+            background: #1abc9c;
+            color: white;
+            font-size: 30px;
+            width: 100%;
+            display: block;
+            position:sticky;
+            text-align:center;
+            top:0;
+            }
+        /* maindDiv class- div for containing rest of html page elements*/
+        .mainDiv{
+            margin:5px;
+            padding:5px;
+        }
+        /* homeLink - ahref for link to home, want it perfectly centered*/
+        #homeLink{
+            position:relative;
+        }
+
+        #loginLink{
+            position:absolute;
+            left: 1%;
+        }
+        #logoutLink{
+            position:absolute;
+            right: 1%;
+        }
+        .headerP{
+            padding:0;
+            margin:0;
+            }
+        html{ padding:0;
+            margin:0;
+            }
+        body{ padding:0;
+            margin:0;
+            }
+    </style>
+    <title>Generic Site HomePage</title>
+</head>
+<body>
+    <div class="headerDiv">
+
+        <a id="loginLink" href="login.html">Login</a>
+        <a id="homeLink" href="home.html">Home</a>
+        <a id="logoutLink" href="home.html">Logout</a>
+
+        <p class="headerP">Hello Toolbar</p>
+    </div>
+
+    <div class="mainDiv">
+        <div id="d3Container"></div>
+
+    </div>
+</body>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+    
+    var csvData=d3.csv("/data/IRIS.csv");
+
+    //wanted to seperate lodaing in data then working with that but as of v5 of d3 this is closest I can get, trying to use csvData directly results in "promise" being returned so need to use .then(function(data)) to work with actual csv data
+    //first with this I'm going to create a bar chart
+    csvData.then(function(data){
+        console.log(data);
+
+        //setting height and width for y and x scaling range
+        var height = 400;
+        var width = 800;
+        //dataCount will be used to keep track of how many individual bar's will be needed
+        var dataCount = data.length;
+        var gap = 1; //gap of 1 pixel between bar's
+        console.log(dataCount);
+
+        //my svgContainer is larger than the bar chart that will be within it
+        var svgContainer = d3.select("#d3Container").append("svg")
+            .attr('width', 1000)
+            .attr('height', 600);
+
+        var yScale = d3.scaleLinear()
+            .domain([0,d3.max(data, function(d){
+                return d.petal_length;
+            })])
+            .range([height,0]);
+
+        var xScale =d3.scaleBand()
+            .domain([0,dataCount])
+            .range([0,width]);
+
+        var barRectangles = svgContainer.selectAll('rect')
+            .data(data);
+
+        barRectangles.enter()
+            .append('rect')
+            .attr('x', function(d, i){
+                    console.log(d,i);
+                    return 50 + (i*5);
+                })
+            .attr('y', 30)
+            .attr('width', 4)
+            .attr('height', function(d){
+                console.log(d)
+                return (d.petal_length * 10);
+            })
+            .attr('fill', function(d){
+                if(d.species.includes("setosa")) {return 'blue';}
+                else if (d.species.includes("virginica")) {return 'red';}
+                else if (d.species.includes("versicolor")) {return 'green';}
+            });
+    });
+
+</script>
+</html>

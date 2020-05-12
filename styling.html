@@ -62,6 +62,21 @@
           border-radius: 5px;
           background-color:#525f6b;
           padding: 20px 0 30px 0;
+          width: 50%;
+        }
+
+        select{
+
+          width: 100%;
+          padding: 12px;
+          border: none;
+          border-radius: 4px;
+          margin: 5px 0;
+          opacity: 0.85;
+          display: inline-block;
+          font-size: 17px;
+          line-height: 20px;
+          text-decoration: none; /* remove underline from anchors */
         }
 
         /* style inputs and link buttons */
@@ -208,7 +223,7 @@
                 <div class="row">
                     <div class="doublecol">
                         <input id="headerColourTextBox" type="text">
-                        <button id="headerColourBtn" onclick="changeFontBackgroundColour()">Change Colour</button>
+                        <button id="headerColourBtn" onclick="changeFontBackgroundColour()">Change Background Colour</button>
                     </div>
                     <div class="doublecol">
                         <input id="fontSizeTextBox" type="text">
@@ -221,8 +236,24 @@
                         <button id="fontColourTextBtn" onclick="changeFontColour()">Change Font Colour</button>
                     </div>
                     <div class="doublecol">
-                        <input id="fontSizeTextBox" type="text">
-                        <button id="fontSizeBtn" onclick="changeFontSize()">Change Text Size</button>
+                          <select id=fontFamilySelector>
+                            <option style="font-family:tahoma">Tahoma</option>
+                            <option style="font-family:Arial">Arial</option>
+                            <option style="font-family:Comic Sans MS">Comic Sans MS</option>
+                            <option style="font-family:Fearless">Fearless</option>
+                          </select>
+
+                        <button id="fontStyleBtn" onclick="changeFontFam()">Change Font Family</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="doublecol">
+                        <input id="padding" type="text">
+                        <button id="fontColourTextBtn" onclick="changeFontColour()">Change padding</button>
+                    </div>
+                    <div class="doublecol">
+                        <input id="margin" type="text">
+                        <button id="fontColourTextBtn" onclick="changeFontColour()">Change margin</button>
                     </div>
                 </div>
                 <div id="clear"></div>
@@ -241,29 +272,34 @@
             <p class="settingTitle">Text Size:</p>
             <p class="settingValue" id="textSizeSetting"></p>
             <p class="settingTitle">Text Background Colour:</p>
-            <p class="settingValue" id="textBackgroundColourSetting"></p>                 
+            <p class="settingValue" id="textBackgroundColourSetting"></p>    
+            <p class="settingTitle">Font Family:</p>
+            <p class="settingValue" id="textFontFamSetting"></p>             
         </div>
     </div>
     
 </body>
 <script>
 
-    let defaultTextSize = 'initial'; //in actuality is 16px
-    let defaultTextBackgroundColour =  'initial'; // transparent
-    let defaultText = 'Here is some sample Text, update below to replace with your preference.'; //this was only var initial would not make sense for
-    let defaultTextColour = "initial"; //black
-    let defaultFontStyle = "initial"; //
+    const defaultTextSize = 'initial'; //in actuality is 16px
+    const defaultTextBackgroundColour =  'initial'; // transparent
+    const defaultText = 'Here is some sample Text, update below to replace with your preference.'; //this was only var initial would not make sense for
+    const defaultTextColour = "initial"; //black
+    const defaultFontStyle = "initial"; //
+    const defaultFontFamily = "tahoma";
 
     let customisedTextField = document.getElementById("userEnteredText");
     let userEntryTextField = document.getElementById("updateUserTextArea");
     let userEntryFontBackgroundColourField = document.getElementById("headerColourTextBox");
     let userEntryFontSizeField = document.getElementById("fontSizeTextBox");
     let userEntryFontColourField = document.getElementById("fontColourTextBox");
+    let userEntryFontFamilyDropDown = document.getElementById("fontFamilySelector");
 
     let userEnteredTextSettings = document.getElementById("textBody");
     let userEnteredFontSizeSettings = document.getElementById("textSizeSetting");
     let userEnteredFontColourSettings = document.getElementById("textColourSetting");
     let userEnteredTextBackgroundColourSettings = document.getElementById("textBackgroundColourSetting");
+    let userEnteredTextFontFamSettings = document.getElementById("textFontFamSetting");
 
     //changes the background color of customisedTextField
     changeFontBackgroundColour = function(){
@@ -296,6 +332,13 @@
         tagStyleSettings();
     }
 
+    changeFontFam = function(){
+        //userEntryFontFamilyDropDown.options gives us dict object, then using the .selectedIndex and .text we get the actual value selected
+        var text = userEntryFontFamilyDropDown.options[userEntryFontFamilyDropDown.selectedIndex].text;
+        customisedTextField.style.fontFamily = text;
+        tagStyleSettings();
+    }
+
     //Function get's called on button press, Idea here is to reset all settings to their initial, handily there is a CSS property for that
     resetToDefault = function(){
         customisedTextField.innerHTML = defaultText;
@@ -303,6 +346,7 @@
         customisedTextField.style.backgroundColor = defaultTextBackgroundColour;
         customisedTextField.style.color = defaultTextColour;
         customisedTextField.fontStyle = defaultFontStyle;
+        customisedTextField.style.fontFamily = defaultFontFamily;
         tagStyleSettings();
     }
 
@@ -321,6 +365,7 @@
         userEnteredFontSizeSettings.innerHTML = style['font-size'];
         userEnteredFontColourSettings.innerHTML = style['color'];
         userEnteredTextBackgroundColourSettings.innerHTML = style['background-color'];
+        userEnteredTextFontFamSettings.innerHTML = style['font-family'];
     }
     //call initially to load default CSS properties for customisedTextField
     tagStyleSettings();
