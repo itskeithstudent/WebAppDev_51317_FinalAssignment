@@ -16,6 +16,7 @@
             position:sticky;
             text-align:center;
             top:0;
+            z-index: 10;
             }
         /* maindDiv class- div for containing rest of html page elements*/
         .mainDiv{
@@ -45,14 +46,21 @@
         body{ padding:0;
             margin:0;
             }
+
         /*Border box sizing is telling the various elements to account for border and padding when setting size */
         * {box-sizing: border-box}
 
-        /* loginContainer - div for... formerly  #f2f2f2; */
-        #loginContainer {
+        /* Div for */
+        #customiseTextContainer {
           position: relative;
           border-radius: 5px;
           background-color:#343d46;
+          padding: 20px 0 30px 0;
+        }
+        #styleSettingsContainer {
+          position: relative;
+          border-radius: 5px;
+          background-color:#525f6b;
           padding: 20px 0 30px 0;
         }
 
@@ -154,6 +162,26 @@
             text-decoration: none;
         }
 
+        .settingTitle{
+            color: white;
+            margin-left: 2.5%;
+            margin-bottom: 0%;
+        }
+
+        .settingValue{
+            color:#98c794;
+            margin-left: 5%;
+            border-top-style: solid;
+            border-top: 1px #c695c6;
+            border-bottom: 1px #c695c6;
+            border-top-style: solid;
+            border-bottom-style: solid;
+            width: auto;
+            display: inline-block;
+            padding-top: 1px;
+            padding-bottom: 1px;
+        }
+
     </style>
     <title>Generic Site HomePage</title>
 </head>
@@ -170,7 +198,7 @@
     <div class="mainDiv">
 
         <p id="userEnteredText">Here is some sample Text, update below to replace with your preference.</p>
-        <div id="loginContainer">
+        <div id="customiseTextContainer">
                 <div class="row">
                     <div class="singleCol">
                         <textarea id="updateUserTextArea"></textarea>
@@ -180,7 +208,7 @@
                 <div class="row">
                     <div class="doublecol">
                         <input id="headerColourTextBox" type="text">
-                        <button id="headerColourBtn" onclick="changeHeaderColour()">Change Colour</button>
+                        <button id="headerColourBtn" onclick="changeFontBackgroundColour()">Change Colour</button>
                     </div>
                     <div class="doublecol">
                         <input id="fontSizeTextBox" type="text">
@@ -204,6 +232,17 @@
                     </div>
                 </div>
         </div>
+        <br>
+        <div id="styleSettingsContainer">
+            <p class="settingTitle">Text Body:</p>
+            <p class="settingValue" id="textBody"></p>
+            <p class="settingTitle">Text Colour:</p>
+            <p class="settingValue" id="textColourSetting"></p>
+            <p class="settingTitle">Text Size:</p>
+            <p class="settingValue" id="textSizeSetting"></p>
+            <p class="settingTitle">Text Background Colour:</p>
+            <p class="settingValue" id="textBackgroundColourSetting"></p>                 
+        </div>
     </div>
     
 </body>
@@ -211,9 +250,9 @@
 
     let defaultTextSize = 'initial'; //in actuality is 16px
     let defaultTextBackgroundColour =  'initial'; // transparent
-    let defaultText = 'Here is some sample Text, update below to replace with your preference.';
+    let defaultText = 'Here is some sample Text, update below to replace with your preference.'; //this was only var initial would not make sense for
     let defaultTextColour = "initial"; //black
-    let defaultFontStyle = "initial";
+    let defaultFontStyle = "initial"; //
 
     let customisedTextField = document.getElementById("userEnteredText");
     let userEntryTextField = document.getElementById("updateUserTextArea");
@@ -221,39 +260,69 @@
     let userEntryFontSizeField = document.getElementById("fontSizeTextBox");
     let userEntryFontColourField = document.getElementById("fontColourTextBox");
 
-    console.log(userEnteredText.style.backgroundColor);
+    let userEnteredTextSettings = document.getElementById("textBody");
+    let userEnteredFontSizeSettings = document.getElementById("textSizeSetting");
+    let userEnteredFontColourSettings = document.getElementById("textColourSetting");
+    let userEnteredTextBackgroundColourSettings = document.getElementById("textBackgroundColourSetting");
 
-    changeHeaderColour = function(){
+    //changes the background color of customisedTextField
+    changeFontBackgroundColour = function(){
         userColour = userEntryFontBackgroundColourField.value;
         customisedTextField.style.backgroundColor = userColour;
+        tagStyleSettings();
     }
+
+    //changes the font size of customisedTextField
     changeFontSize = function(){
         userTextSize = userEntryFontSizeField.value;
         customisedTextField.style.fontSize = userTextSize;
         //document.getElementById('pageHeaderDiv').style.fontSize = userTextSize;
+        tagStyleSettings();
     }
 
+    //changes the font color of customisedTextField
     changeFontColour = function(){
         fontColour = userEntryFontColourField.value;
         console.log(fontColour)
         customisedTextField.style.color = fontColour;
-
+        tagStyleSettings();
     }
 
+    //changes the body of text of customisedTextField
     changeText = function(){
         userText = userEntryTextField.value;
         //console.log(userText)
         customisedTextField.innerHTML = userText;
+        tagStyleSettings();
     }
 
+    //Function get's called on button press, Idea here is to reset all settings to their initial, handily there is a CSS property for that
     resetToDefault = function(){
         customisedTextField.innerHTML = defaultText;
         customisedTextField.style.fontSize = defaultTextSize;
         customisedTextField.style.backgroundColor = defaultTextBackgroundColour;
-        customisedTextField.colour = defaultTextColour;
+        customisedTextField.style.color = defaultTextColour;
         customisedTextField.fontStyle = defaultFontStyle;
+        tagStyleSettings();
     }
 
+    //this function populates text information about what the text field's CSS properties are, get's called at end of every function that updates customisedTextField
+    tagStyleSettings = function(){
 
+        /* 
+            had to set style var here and let it equal to getComputedStyle of the textField of interest,
+            if using .innerHTML.style.color unless explicitly set in Javascript I would just get empty string.
+            So to resolve this getComputedStyle returns an array/JSON/dict (not sure proper terminology for JS) and I can get the value 
+            for that property using style['color'] etc.
+        */
+        let style = getComputedStyle(customisedTextField)
+
+        userEnteredTextSettings.innerHTML = customisedTextField.innerHTML;
+        userEnteredFontSizeSettings.innerHTML = style['font-size'];
+        userEnteredFontColourSettings.innerHTML = style['color'];
+        userEnteredTextBackgroundColourSettings.innerHTML = style['background-color'];
+    }
+    //call initially to load default CSS properties for customisedTextField
+    tagStyleSettings();
 </script>
 </html>
