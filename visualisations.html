@@ -59,6 +59,13 @@
     </div>
 
     <div class="mainDiv">
+        <button id="generateTrendBtn" onclick="generateTrend()">Change Y Axis Parameter</button>
+        <select id=selectYDropDown>
+            <option>petal_length</option>
+            <option>petal_width</option>
+            <option>sepal_length</option>
+            <option>sepal_width</option>
+         </select>
         <div id="d3Container"></div>
 
     </div>
@@ -67,57 +74,145 @@
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script>
     
-    var csvData=d3.csv("/data/IRIS.csv");
 
-    //wanted to seperate lodaing in data then working with that but as of v5 of d3 this is closest I can get, trying to use csvData directly results in "promise" being returned so need to use .then(function(data)) to work with actual csv data
-    //first with this I'm going to create a bar chart
-    csvData.then(function(data){
-        console.log(data);
+    generateTrend = function(){
 
-        //setting height and width for y and x scaling range
-        var height = 400;
-        var width = 800;
-        //dataCount will be used to keep track of how many individual bar's will be needed
-        var dataCount = data.length;
-        var gap = 1; //gap of 1 pixel between bar's
-        console.log(dataCount);
+        //this will be used to set what column to pick data from and how to label y axis
+        let yDropDownInput = document.getElementById("selectYDropDown");
 
-        //my svgContainer is larger than the bar chart that will be within it
-        var svgContainer = d3.select("#d3Container").append("svg")
-            .attr('width', 1000)
-            .attr('height', 600);
+        //if there's a preexisting svg remove contents then remove itself
+        svgContainer = d3.select("svg")
+        svgContainer.selectAll("*").remove();
+        svgContainer.remove();
 
-        var yScale = d3.scaleLinear()
-            .domain([0,d3.max(data, function(d){
-                return d.petal_length;
-            })])
-            .range([height,0]);
+        //load in the iris dataset
+        var csvData=d3.csv("/data/IRIS.csv");
 
-        var xScale =d3.scaleBand()
-            .domain([0,dataCount])
-            .range([0,width]);
+        //wanted to seperate lodaing in data then working with that but as of v5 of d3 this is closest I can get, trying to use csvData directly results in "promise" being returned so need to use .then(function(data)) to work with actual csv data
+        //first with this I'm going to create a bar chart
+        csvData.then(function(data){
+            console.log(data);
+            
+            var yParam = yDropDownInput.options[document.getElementById("selectYDropDown").selectedIndex].text;
 
-        var barRectangles = svgContainer.selectAll('rect')
-            .data(data);
+            //setting height and width for y and x scaling range
+            var height = 400;
+            var width = 800;
+            //dataCount will be used to keep track of how many individual bar's will be needed
+            var dataCount = data.length;
+            var gap = 1; //gap of 1 pixel between bar's
+            console.log(dataCount);
 
-        barRectangles.enter()
-            .append('rect')
-            .attr('x', function(d, i){
-                    console.log(d,i);
-                    return 50 + (i*5);
+            //my svgContainer is larger than the bar chart that will be within it
+            var svgContainer = d3.select("#d3Container").append("svg")
+                .attr('width', 900)
+                .attr('height', 450);
+
+            var yScale = d3.scaleLinear()
+                .domain([0,d3.max(data, function(d){
+                    return d[yParam];
+                })])
+                .range([height,0]);
+
+            var xScale =d3.scaleBand()
+                .range([0,width]);
+
+            var yAxis = d3.axisLeft()
+                .scale(yScale);
+
+            var xAxis = d3.axisBottom()
+                .scale(xScale);
+
+            var barRectangles = svgContainer.selectAll('rect')
+                .data(data);
+
+            barRectangles.enter()
+                .append('rect')
+                .attr("fill", "white")
+                    .attr('x', function(g, i){
+                        return 100;
+                    })
+                    .attr("width", 2000)
+                    .transition()
+                    .delay(1000)
+                    .duration(2500)
+                .attr('x', function(d, i){
+                    return 50 + (i*(width/dataCount));
+                    })
+                .attr('y', function(d){
+                    return yScale((d[yParam]));
                 })
-            .attr('y', 30)
-            .attr('width', 4)
-            .attr('height', function(d){
-                console.log(d)
-                return (d.petal_length * 10);
-            })
-            .attr('fill', function(d){
-                if(d.species.includes("setosa")) {return 'blue';}
-                else if (d.species.includes("virginica")) {return 'red';}
-                else if (d.species.includes("versicolor")) {return 'green';}
-            });
-    });
+                .attr('width', 4)
+                .attr('height', function(d){
+                    console.log(d)
+                    return height - yScale(d[yParam]);
+                })
+                .attr('fill', function(d){
+                    if(d.species.includes("setosa")) {return 'blue';}
+                    else if (d.species.includes("virginica")) {return 'red';}
+                    else if (d.species.includes("versicolor")) {return 'green';}
+                });
+
+            svgContainer.append("g")
+                .attr("transform", "translate(48,0)")
+                .call(yAxis);
+
+            svgContainer.append("text")             
+              .attr("transform",
+                    "translate(20," + (height/2) + ") rotate(-90)")
+              .style("text-anchor", "middle")
+              .text(yParam);
+
+            svgContainer.append("g")
+                .attr("transform", "translate(50," + height + ")")
+                .call(xAxis);
+
+                // text label for the x axis
+            svgContainer.append("text")             
+              .attr("transform",
+                    "translate("+(width/2)+"," + (height +20) + ")")
+              .style("text-anchor", "middle")
+              .text("Species");
+
+
+            // create a list of keys
+            var keys = ["Setosa", "Virginica", "Versicolor"]
+
+            // Add one dot in the legend for each name.
+            svgContainer.selectAll("mydots")
+              .data(keys)
+              .enter()
+              .append("circle")
+                .attr("cx", 90)
+                .attr("cy", function(d,i){ return 20 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+                .attr("r", 7)
+                .style("fill", function(d){ 
+                    if(d==='Setosa'){return'blue';}
+                    else if(d==='Virginica'){return'red';}
+                    else if(d==='Versicolor'){return'green';}
+                })
+
+            // Add one dot in the legend for each name.
+            svgContainer.selectAll("mylabels")
+              .data(keys)
+              .enter()
+              .append("text")
+                .attr("x", 100)
+                .attr("y", function(d,i){ return 25 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+                .style("fill", function(d){ 
+                    if(d==='Setosa'){return'blue';}
+                    else if(d==='Virginica'){return'red';}
+                    else if(d==='Versicolor'){return'green';}
+                })
+                .text(function(d){ return d})
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+
+                });
+
+    }
+    generateTrend();
+
 
 </script>
 </html>
