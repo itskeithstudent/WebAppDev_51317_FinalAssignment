@@ -162,6 +162,13 @@
                 .range([height,0]);
 
             var xScale =d3.scaleBand()
+                .domain([0,150])
+                .range([0,width]);
+
+            var xScaleAlt = d3.scaleLinear()
+                .domain([0,d3.max(data, function(d){
+                    return(d.petal_width)
+                })])
                 .range([0,width]);
 
             var yAxis = d3.axisLeft()
@@ -250,7 +257,18 @@
                 .attr("text-anchor", "left")
                 .style("alignment-baseline", "middle")
 
-                });
+            // Add dots
+            //svgContainer.append('g')
+            svgContainer.selectAll("dot")
+                .data(data)
+                .enter()
+                .append("circle")
+                  .attr("cx", function (d) { return 20 +xScaleAlt(d.petal_width); } )
+                  .attr("cy", function (d) { return yScale(d.petal_length); } )
+                  .attr("r", 5)
+                  .style("fill", "#69b3a2")
+
+            });
 
     }
     generateTrend();
