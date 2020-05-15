@@ -45,6 +45,17 @@
         body{ padding:0;
             margin:0;
             }
+        p{
+            color:white;
+        }
+        #d3SettingsContainerDiv{
+            display: inline-block; 
+            position: relative;
+            border-radius: 5px;
+            background-color:#343d46;
+            padding: 20px;
+        }
+
     </style>
     <title>Generic Site HomePage</title>
 </head>
@@ -59,15 +70,27 @@
     </div>
 
     <div class="mainDiv">
-        <button id="generateTrendBtn" onclick="generateTrend()">Change Y Axis Parameter</button>
-        <select id=selectYDropDown>
-            <option>petal_length</option>
-            <option>petal_width</option>
-            <option>sepal_length</option>
-            <option>sepal_width</option>
-         </select>
+        
         <div id="d3Container"></div>
-
+        <div id="d3SettingsContainerDiv">
+            <p>Parameter for the Y Axis</p>
+            <select id=selectYDropDown>
+                <option>petal_length</option>
+                <option>petal_width</option>
+                <option>sepal_length</option>
+                <option>sepal_width</option>
+            </select>
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Y Axis Parameter</button>
+            <p>Species Colour For Setosa</p>
+            <input type="text" id="setosaColor">
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+            <p>Species Colour For Versicolor</p>
+            <input type="text" id="versicolorColor">
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+            <p>Species Colour For Virginica</p>
+            <input type="text" id="virginicaColor">
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+        </div>
     </div>
 </body>
 
@@ -79,6 +102,30 @@
 
         //this will be used to set what column to pick data from and how to label y axis
         let yDropDownInput = document.getElementById("selectYDropDown");
+        let setosaColorInput = document.getElementById("setosaColor");
+        let versicolorColorInput = document.getElementById("versicolorColor");
+        let virginicaColorInput = document.getElementById("virginicaColor");
+
+        let yParam = yDropDownInput.options[document.getElementById("selectYDropDown").selectedIndex].text;
+
+        let setosaColor = setosaColorInput.value;
+        let versicolorColor = versicolorColorInput.value;
+        let virginicaColor = virginicaColorInput.value;
+
+        // create a list of keys to be used later for generating legend
+        let keys = ["Setosa", "Versicolor", "Virginica"]
+
+        //if any of the color fields are blank set default colours
+        //should the user enter an unitelligible colour, fill defaults to black
+        if(setosaColor === ""){
+            setosaColor = "blue";
+        }
+        if(versicolorColor===""){
+            versicolorColor = "green"
+        }
+        if(virginicaColor===""){
+            virginicaColor = "red"
+        }
 
         //if there's a preexisting svg remove contents then remove itself
         svgContainer = d3.select("svg")
@@ -91,9 +138,9 @@
         //wanted to seperate lodaing in data then working with that but as of v5 of d3 this is closest I can get, trying to use csvData directly results in "promise" being returned so need to use .then(function(data)) to work with actual csv data
         //first with this I'm going to create a bar chart
         csvData.then(function(data){
-            console.log(data);
+            //console.log(data);
             
-            var yParam = yDropDownInput.options[document.getElementById("selectYDropDown").selectedIndex].text;
+            
 
             //setting height and width for y and x scaling range
             var height = 400;
@@ -101,7 +148,7 @@
             //dataCount will be used to keep track of how many individual bar's will be needed
             var dataCount = data.length;
             var gap = 1; //gap of 1 pixel between bar's
-            console.log(dataCount);
+            //console.log(dataCount);
 
             //my svgContainer is larger than the bar chart that will be within it
             var svgContainer = d3.select("#d3Container").append("svg")
@@ -144,13 +191,12 @@
                 })
                 .attr('width', 4)
                 .attr('height', function(d){
-                    console.log(d)
                     return height - yScale(d[yParam]);
                 })
                 .attr('fill', function(d){
-                    if(d.species.includes("setosa")) {return 'blue';}
-                    else if (d.species.includes("virginica")) {return 'red';}
-                    else if (d.species.includes("versicolor")) {return 'green';}
+                    if(d.species.includes("setosa")) {return setosaColor;}
+                    else if (d.species.includes("virginica")) {return virginicaColor;}
+                    else if (d.species.includes("versicolor")) {return versicolorColor;}
                 });
 
             svgContainer.append("g")
@@ -164,7 +210,7 @@
               .text(yParam);
 
             svgContainer.append("g")
-                .attr("transform", "translate(50," + height + ")")
+                .attr("transform", "translate(48," + height + ")")
                 .call(xAxis);
 
                 // text label for the x axis
@@ -173,10 +219,6 @@
                     "translate("+(width/2)+"," + (height +20) + ")")
               .style("text-anchor", "middle")
               .text("Species");
-
-
-            // create a list of keys
-            var keys = ["Setosa", "Virginica", "Versicolor"]
 
             // Add one dot in the legend for each name.
             svgContainer.selectAll("mydots")
@@ -187,9 +229,9 @@
                 .attr("cy", function(d,i){ return 20 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
                 .attr("r", 7)
                 .style("fill", function(d){ 
-                    if(d==='Setosa'){return'blue';}
-                    else if(d==='Virginica'){return'red';}
-                    else if(d==='Versicolor'){return'green';}
+                    if(d==='Setosa'){return setosaColor;}
+                    else if(d==='Virginica'){return virginicaColor;}
+                    else if(d==='Versicolor'){return versicolorColor;}
                 })
 
             // Add one dot in the legend for each name.
@@ -200,9 +242,9 @@
                 .attr("x", 100)
                 .attr("y", function(d,i){ return 25 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
                 .style("fill", function(d){ 
-                    if(d==='Setosa'){return'blue';}
-                    else if(d==='Virginica'){return'red';}
-                    else if(d==='Versicolor'){return'green';}
+                    if(d==='Setosa'){return setosaColor;}
+                    else if(d==='Virginica'){return virginicaColor;}
+                    else if(d==='Versicolor'){return versicolorColor;}
                 })
                 .text(function(d){ return d})
                 .attr("text-anchor", "left")
