@@ -26,28 +26,33 @@
         #homeLink{
             position:relative;
         }
-
+        /* loginLink - ahref for link to login page, want it perfectly centered*/
         #loginLink{
             position:absolute;
             left: 1%;
         }
+        /* To be removed */
         #logoutLink{
             position:absolute;
             right: 1%;
         }
+        /* headerP - class for the header to remove padding and margin so it's flush with edges of html page*/
         .headerP{
             padding:0;
             margin:0;
             }
+        /* remove padding and margin for html and body */
         html{ padding:0;
             margin:0;
             }
         body{ padding:0;
             margin:0;
             }
+        /* p tag text is all white */
         p{
             color:white;
         }
+        /* d3SettingsContainerDiv - div for containing settings to change chart's settings */
         #d3SettingsContainerDiv{
             display: inline-block; 
             position: relative;
@@ -75,7 +80,7 @@
         <div id="d3SettingsContainerDiv">
             <p>Parameter for the Y-Axis</p>
             <select id=selectYDropDown>
-                <option>petal_length</option>
+                <option selected="true">petal_length</option>
                 <option>petal_width</option>
                 <option>sepal_length</option>
                 <option>sepal_width</option>
@@ -84,19 +89,19 @@
             <p>Parameter for the X-Axis</p>
             <select id=selectXDropDown>
                 <option>petal_length</option>
-                <option>petal_width</option>
+                <option selected="true">petal_width</option>
                 <option>sepal_length</option>
                 <option>sepal_width</option>
             </select>
             <button id="generateTrendBtn" onclick="generateTrend()">Change X Axis Parameter</button>
             <p>Species Colour For Setosa</p>
-            <input type="text" id="setosaColor">
+            <input type="text" id="setosaColor" placeholder="blue">
             <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
             <p>Species Colour For Versicolor</p>
-            <input type="text" id="versicolorColor">
+            <input type="text" id="versicolorColor" placeholder="green">
             <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
             <p>Species Colour For Virginica</p>
-            <input type="text" id="virginicaColor">
+            <input type="text" id="virginicaColor" placeholder="red">
             <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
         </div>
     </div>
@@ -108,15 +113,29 @@
 
     generateTrend = function(){
 
+
+        /*
+            DOM variables
+        */
         //this will be used to set what column to pick data from and how to label y axis
         let yDropDownInput = document.getElementById("selectYDropDown");
+        //textField for selecting colour for setosa species 
         let setosaColorInput = document.getElementById("setosaColor");
+        //textField for selecting colour for versicolor species 
         let versicolorColorInput = document.getElementById("versicolorColor");
+        //textField for selecting colour for virginica species 
         let virginicaColorInput = document.getElementById("virginicaColor");
 
+        /*
+            input variables from DOM
+        */
+        //get the text for selected option in dropdown
+        //yParam is used for setting column used for y axis
+        //xParam is used for setting column used for x axis
         let yParam = yDropDownInput.options[document.getElementById("selectYDropDown").selectedIndex].text;
         let xParam = yDropDownInput.options[document.getElementById("selectXDropDown").selectedIndex].text;
 
+        //get colors for different species
         let setosaColor = setosaColorInput.value;
         let versicolorColor = versicolorColorInput.value;
         let virginicaColor = virginicaColorInput.value;
@@ -136,6 +155,9 @@
             virginicaColor = "red"
         }
 
+        /*
+            Cleanup of old
+        */
         //if there's a preexisting svg remove contents then remove itself
         svgContainer = d3.selectAll("svg")
         svgContainer.selectAll("*").remove();
@@ -147,52 +169,62 @@
         //wanted to seperate lodaing in data then working with that but as of v5 of d3 this is closest I can get, trying to use csvData directly results in "promise" being returned so need to use .then(function(data)) to work with actual csv data
         //first with this I'm going to create a bar chart
         csvData.then(function(data){
+            //console for testing input data
             //console.log(data);
-            
-            
 
-            //setting height and width for y and x scaling range
-            var height = 400;
-            var width = 550;
-
-            var svgHeight = 450;
+            /*
+                Chart Sizing variables
+            */
+            //larger area for the svg than the chart incase elements go partially outside
+            //setting height and width for svg area which chart will go within
+            var svgHeight = 475;
             var svgWidth = 600;
+            //setting height and width for y and x scaling range and size of chart area
+            var height = 400;
+            var width = 525;
+
             //dataCount will be used to keep track of how many individual bar's will be needed
             var dataCount = data.length;
             var gap = 1; //gap of 1 pixel between bar's
             //console.log(dataCount);
 
-            //my svgContainer is larger than the bar chart that will be within it
+            //svgBarChart is svg for containing bar chart
             var svgBarChart = d3.select("#d3Container").append("svg")
                 .attr('width', svgWidth)
                 .attr('height', svgHeight);
 
+            //yScale shared across barchart and scatter svg's
             var yScale = d3.scaleLinear()
                 .domain([0,d3.max(data, function(d){
                     return (d[yParam]);
                 })])
                 .range([height,0]);
 
+            //xScaleBar specific for bar chart as barchart x won't change and is scaleBand
             var xScaleBar =d3.scaleBand()
                 .domain([0,150])
                 .range([0,width]);
 
+            //xScaleLinear scale for x axis on scatter as this will vary
             var xScaleScatter = d3.scaleLinear()
                 .domain([0,d3.max(data, function(d){
                     return(d[xParam])
                 })])
                 .range([0,width]);
 
+            //sets the yAxis using the yScale
             var yAxis = d3.axisLeft()
                 .scale(yScale);
 
+            //sets the X Axis for the BarChart
             var xAxis = d3.axisBottom()
                 .scale(xScaleBar);
 
+            //sets the X Axis for the Scatter Plot
             var xAxisScatter = d3.axisBottom()
                 .scale(xScaleScatter);
 
-
+            //
             var barRectangles = svgBarChart.selectAll('rect')
                 .data(data);
 
@@ -245,9 +277,10 @@
               .text("Species");
 
             // Add one dot in the legend for each name.
-            svgBarChart.selectAll("mydots")
-              .data(keys)
-              .enter()
+            var scatterPoints = svgBarChart.selectAll("mydots")
+              .data(keys);
+
+            scatterPoints.enter()
               .append("circle")
                 .attr("cx", 90)
                 .attr("cy", function(d,i){ return 20 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
@@ -260,9 +293,9 @@
 
             // Add one dot in the legend for each name.
             svgBarChart.selectAll("mylabels")
-              .data(keys)
-              .enter()
-              .append("text")
+            .data(keys)
+            .enter()
+            .append("text")
                 .attr("x", 100)
                 .attr("y", function(d,i){ return 25 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
                 .style("fill", function(d){ 
@@ -286,26 +319,27 @@
                 .data(data)
                 .enter()
                 .append("circle")
-                  .attr("cx", function (d) { return 48 +xScaleScatter(d.petal_width); } )
-                  .attr("cy", function (d) { return yScale(d.petal_length); } )
-                  .attr("r", 3)
-                  .attr("transform", "translate(0,5)")
-                  .style("fill", function(d){
-                    if(d.species.includes("setosa")) {return setosaColor;}
-                    else if (d.species.includes("virginica")) {return virginicaColor;}
-                    else if (d.species.includes("versicolor")) {return versicolorColor;}
+                    .attr("cx", function (d) { return 48 +xScaleScatter(d[xParam]); } )
+                    .attr("cy", function (d) { return yScale(d[yParam]); } )
+                    .attr("r", 3)
+                    .attr("transform", "translate(0,5)")
+                    .style("fill", function(d){
+                        //colouring points based on species
+                        if(d.species.includes("setosa")) {return setosaColor;}
+                        else if (d.species.includes("virginica")) {return virginicaColor;}
+                        else if (d.species.includes("versicolor")) {return versicolorColor;}
+                    });
 
-                });
-
+            //append the yaxis line
             svgScatter.append("g")
                 .attr("transform", "translate(48,5)")
                 .call(yAxis);
-
 
             svgScatter.append("g")
                 .attr("transform", "translate(48," + (height+5) + ")")
                 .call(xAxisScatter);
 
+            //text label for y axis
             svgScatter.append("text")             
               .attr("transform",
                     "translate(15," + (height/2) + ") rotate(-90)")
@@ -318,16 +352,7 @@
                     "translate("+(width/2)+"," + (height+40) + ")")
               .style("text-anchor", "middle")
               .text(xParam);
-
-            //svgScatter.attr("float","right")
             });
-        
-            
-           
-
-
-            
-
     }
     generateTrend();
 
