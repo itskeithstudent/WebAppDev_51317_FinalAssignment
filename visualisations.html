@@ -73,7 +73,7 @@
         
         <div id="d3Container"></div>
         <div id="d3SettingsContainerDiv">
-            <p>Parameter for the Y Axis</p>
+            <p>Parameter for the Y-Axis</p>
             <select id=selectYDropDown>
                 <option>petal_length</option>
                 <option>petal_width</option>
@@ -81,6 +81,14 @@
                 <option>sepal_width</option>
             </select>
             <button id="generateTrendBtn" onclick="generateTrend()">Change Y Axis Parameter</button>
+            <p>Parameter for the X-Axis</p>
+            <select id=selectXDropDown>
+                <option>petal_length</option>
+                <option>petal_width</option>
+                <option>sepal_length</option>
+                <option>sepal_width</option>
+            </select>
+            <button id="generateTrendBtn" onclick="generateTrend()">Change X Axis Parameter</button>
             <p>Species Colour For Setosa</p>
             <input type="text" id="setosaColor">
             <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
@@ -107,6 +115,7 @@
         let virginicaColorInput = document.getElementById("virginicaColor");
 
         let yParam = yDropDownInput.options[document.getElementById("selectYDropDown").selectedIndex].text;
+        let xParam = yDropDownInput.options[document.getElementById("selectXDropDown").selectedIndex].text;
 
         let setosaColor = setosaColorInput.value;
         let versicolorColor = versicolorColorInput.value;
@@ -128,7 +137,7 @@
         }
 
         //if there's a preexisting svg remove contents then remove itself
-        svgContainer = d3.select("svg")
+        svgContainer = d3.selectAll("svg")
         svgContainer.selectAll("*").remove();
         svgContainer.remove();
 
@@ -144,30 +153,33 @@
 
             //setting height and width for y and x scaling range
             var height = 400;
-            var width = 800;
+            var width = 550;
+
+            var svgHeight = 450;
+            var svgWidth = 600;
             //dataCount will be used to keep track of how many individual bar's will be needed
             var dataCount = data.length;
             var gap = 1; //gap of 1 pixel between bar's
             //console.log(dataCount);
 
             //my svgContainer is larger than the bar chart that will be within it
-            var svgContainer = d3.select("#d3Container").append("svg")
-                .attr('width', 900)
-                .attr('height', 450);
+            var svgBarChart = d3.select("#d3Container").append("svg")
+                .attr('width', svgWidth)
+                .attr('height', svgHeight);
 
             var yScale = d3.scaleLinear()
                 .domain([0,d3.max(data, function(d){
-                    return d[yParam];
+                    return (d[yParam]);
                 })])
                 .range([height,0]);
 
-            var xScale =d3.scaleBand()
+            var xScaleBar =d3.scaleBand()
                 .domain([0,150])
                 .range([0,width]);
 
-            var xScaleAlt = d3.scaleLinear()
+            var xScaleScatter = d3.scaleLinear()
                 .domain([0,d3.max(data, function(d){
-                    return(d.petal_width)
+                    return(d[xParam])
                 })])
                 .range([0,width]);
 
@@ -175,9 +187,13 @@
                 .scale(yScale);
 
             var xAxis = d3.axisBottom()
-                .scale(xScale);
+                .scale(xScaleBar);
 
-            var barRectangles = svgContainer.selectAll('rect')
+            var xAxisScatter = d3.axisBottom()
+                .scale(xScaleScatter);
+
+
+            var barRectangles = svgBarChart.selectAll('rect')
                 .data(data);
 
             barRectangles.enter()
@@ -196,7 +212,7 @@
                 .attr('y', function(d){
                     return yScale((d[yParam]));
                 })
-                .attr('width', 4)
+                .attr('width', 2)
                 .attr('height', function(d){
                     return height - yScale(d[yParam]);
                 })
@@ -204,31 +220,32 @@
                     if(d.species.includes("setosa")) {return setosaColor;}
                     else if (d.species.includes("virginica")) {return virginicaColor;}
                     else if (d.species.includes("versicolor")) {return versicolorColor;}
-                });
+                })
+                .attr("transform", "translate(0,5)");
 
-            svgContainer.append("g")
-                .attr("transform", "translate(48,0)")
+            svgBarChart.append("g")
+                .attr("transform", "translate(48,5)")
                 .call(yAxis);
 
-            svgContainer.append("text")             
+            svgBarChart.append("text")             
               .attr("transform",
                     "translate(20," + (height/2) + ") rotate(-90)")
               .style("text-anchor", "middle")
               .text(yParam);
 
-            svgContainer.append("g")
-                .attr("transform", "translate(48," + height + ")")
+            svgBarChart.append("g")
+                .attr("transform", "translate(48," + (height+5) + ")")
                 .call(xAxis);
 
                 // text label for the x axis
-            svgContainer.append("text")             
+            svgBarChart.append("text")             
               .attr("transform",
-                    "translate("+(width/2)+"," + (height +20) + ")")
+                    "translate("+(width/2)+"," + (height +25) + ")")
               .style("text-anchor", "middle")
               .text("Species");
 
             // Add one dot in the legend for each name.
-            svgContainer.selectAll("mydots")
+            svgBarChart.selectAll("mydots")
               .data(keys)
               .enter()
               .append("circle")
@@ -242,7 +259,7 @@
                 })
 
             // Add one dot in the legend for each name.
-            svgContainer.selectAll("mylabels")
+            svgBarChart.selectAll("mylabels")
               .data(keys)
               .enter()
               .append("text")
@@ -257,18 +274,59 @@
                 .attr("text-anchor", "left")
                 .style("alignment-baseline", "middle")
 
+            //svgBarChart.attr("float","left")
+
+            var svgScatter = d3.select("#d3Container").append("svg")
+                .attr('width', svgWidth)
+                .attr('height', svgHeight);
+
             // Add dots
-            //svgContainer.append('g')
-            svgContainer.selectAll("dot")
+            // using transform, translate here to offset by 5 on the y axis, this is to keep all dots within the visual and not half cut off
+            svgScatter.selectAll("dot")
                 .data(data)
                 .enter()
                 .append("circle")
-                  .attr("cx", function (d) { return 20 +xScaleAlt(d.petal_width); } )
+                  .attr("cx", function (d) { return 48 +xScaleScatter(d.petal_width); } )
                   .attr("cy", function (d) { return yScale(d.petal_length); } )
-                  .attr("r", 5)
-                  .style("fill", "#69b3a2")
+                  .attr("r", 3)
+                  .attr("transform", "translate(0,5)")
+                  .style("fill", function(d){
+                    if(d.species.includes("setosa")) {return setosaColor;}
+                    else if (d.species.includes("virginica")) {return virginicaColor;}
+                    else if (d.species.includes("versicolor")) {return versicolorColor;}
 
+                });
+
+            svgScatter.append("g")
+                .attr("transform", "translate(48,5)")
+                .call(yAxis);
+
+
+            svgScatter.append("g")
+                .attr("transform", "translate(48," + (height+5) + ")")
+                .call(xAxisScatter);
+
+            svgScatter.append("text")             
+              .attr("transform",
+                    "translate(15," + (height/2) + ") rotate(-90)")
+              .style("text-anchor", "middle")
+              .text(yParam);
+
+            // text label for the x axis
+            svgScatter.append("text")             
+              .attr("transform",
+                    "translate("+(width/2)+"," + (height+40) + ")")
+              .style("text-anchor", "middle")
+              .text(xParam);
+
+            //svgScatter.attr("float","right")
             });
+        
+            
+           
+
+
+            
 
     }
     generateTrend();
