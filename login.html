@@ -156,13 +156,17 @@
             <div class="row">
                     <h2 id="loginh2">Login below or signup</h2>
               <div class="col">
-                    <input id="useremail" type="email" name="useremail" placeholder="Email Address" required>
-                    <input id="password" type="password" name="password" placeholder="Password" required>
+                <form id="login.form" action="home.html" onsubmit="return login()">
+                    <input id="useremail" type="email" name="useremail" placeholder="Email Address" oninvalid="InvalidEmailMessage(this);" 
+                   oninput="InvalidEmailMessage(this);" required>
+                    <input id="password" type="password" name="password" placeholder="Password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" minlength="4" oninvalid="InvalidPasswordMessage(this);" 
+                   oninput="InvalidPasswordMessage(this);" required>
                     <input id="loginBtn" type="submit" value="Login" onclick="login()">
+                </form>
               </div>
               <div class="col">
-                    <button id="signUpBtn">Sign Up</button>
-                    <button id="forgotPwdBtn">Forgot Password</button>
+                    <button id="signUpBtn" onclick="signUp()">Sign Up</button>
+                    <button id="forgotPwdBtn" onclick="forgotPass()">Forgot Password</button>
               </div>
               <div id="clear"></div>
             </div>
@@ -172,26 +176,58 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-    let someUser = {"keith@email.com" : "123"};
-    login = function(){
+    let someUser = {"user@email.com" : "aA1!"};
+    
+    function login(){
         username = document.getElementById("useremail").value;
         password = document.getElementById("password").value;
         if( someUser[username] === password ){
-            window.location="home.html";
-            return false;
+            return true;
         }
         else{
-            alert("Your username or password was incorrect.")
+            alert("Password was incorrect (Hint: Try user@email.com and aA1!)")
+            return false;
         }
     }
-    forgotPass = function(){
+    
+    function forgotPass(){
         alert("Sorry to hear that! \nUnfortunately for you this feature hasn't been added yet.")
     }
-    signUp = function(){
+    
+    function signUp(){
         alert("We're not accepting new user's right now, try again some time!")
     }
 
+    function InvalidEmailMessage(textbox) { 
+  
+            if (textbox.value === '') { 
+                textbox.setCustomValidity 
+                      ('You must enter an email address'); 
+            } else if (textbox.validity.typeMismatch) { 
+                textbox.setCustomValidity 
+                      ('Please enter a valid email address (e.g. john@123.ie)'); 
+            } else { 
+                textbox.setCustomValidity(''); 
+            } 
+  
+            return true; 
+        } 
 
+    function InvalidPasswordMessage(textbox){
+        if (textbox.value === '') { 
+                textbox.setCustomValidity 
+                      ('You must enter a password'); 
+            } else if (textbox.validity.tooShort) { 
+                textbox.setCustomValidity 
+                      ('Password was too short'); 
+            } else if (textbox.validity.patternMismatch){ 
+                textbox.setCustomValidity('Your Password must contain at least one of the following: lower case letter(a-z), upper case letter(A-Z), number(1-9) and a special character'); 
+            } else { 
+                textbox.setCustomValidity(''); 
+            } 
+  
+            return true; 
+    }
 
 </script>
 </html>

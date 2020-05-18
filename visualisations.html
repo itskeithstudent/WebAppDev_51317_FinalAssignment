@@ -51,6 +51,8 @@
         /* p tag text is all white */
         p{
             color:white;
+            margin:0px;
+            margin-top: 10px;
         }
         /* d3SettingsContainerDiv - div for containing settings to change chart's settings */
         #d3SettingsContainerDiv{
@@ -58,9 +60,22 @@
             position: relative;
             border-radius: 5px;
             background-color:#343d46;
-            padding: 20px;
+            padding: 0px 20px 10px 20px;
         }
 
+        #d3SettingsContainerHeaderDiv{
+            position: relative;
+            border-radius: 5px;
+            background-color:white;
+            margin: 0px;
+        }
+
+        #d3SettingsContainerHeader{
+            color:black;
+            text-align: center;
+            font-weight: bold;
+            margin: 5px;
+        }
     </style>
     <title>Generic Site HomePage</title>
 </head>
@@ -78,6 +93,9 @@
         
         <div id="d3Container"></div>
         <div id="d3SettingsContainerDiv">
+            <div id ="d3SettingsContainerHeaderDiv">
+                <p id="d3SettingsContainerHeader"> Settings for above chart's </p>
+            </div>
             <p>Parameter for the Y-Axis</p>
             <select id=selectYDropDown>
                 <option selected="true">petal_length</option>
