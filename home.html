@@ -17,12 +17,20 @@
             text-align:center;
             top:0;
             }
+
+        .headerDiv div{
+            display: inline-block;
+            zoom: 1; /* Trigger hasLayout */
+            width: 33%;
+            text-align: center;
+        }
         /* maindDiv class- div for containing rest of html page elements*/
         .mainDiv{
             margin:5px;
             padding:5px;
         }
         /* homeLink - ahref for link to home, want it perfectly centered*/
+        /*
         #homeLink{
             position:relative;
         }
@@ -35,6 +43,7 @@
             position:absolute;
             right: 1%;
         }
+        */
         .headerP{
             padding:0;
             margin:0;
@@ -50,10 +59,13 @@
 </head>
 <body>
     <div class="headerDiv">
-
-        <a id="loginLink" href="login.html">Login</a>
-        <a id="homeLink" href="home.html">Home</a>
-        <a id="logoutLink" href="home.html">Logout</a>
+        <div>
+            <a id="loginLink" href="login.html">Login</a>
+        </div><div>
+            <a id="homeLink" href="home.html">Home</a>
+        </div><div>
+            <a id="logoutLink" href="home.html">Logout</a>
+        </div>
 
         <p class="headerP">Hello Toolbar</p>
     </div>
