@@ -50,13 +50,27 @@
         /*Border box sizing is telling the various elements to account for border and padding when setting size */
         * {box-sizing: border-box}
 
-        /* Div for */
+        #userTextContainer{
+          position: relative;
+          border-radius: 5px;
+          border-color: black;
+          border-style: solid;
+          background-color: lightgrey;
+          padding: 10px;
+          margin:5px 0px;
+          height: auto;
+        }
+
+        /* Div for containing all input's and buttons to change target text*/
         #customiseTextContainer {
           position: relative;
           border-radius: 5px;
           background-color:#343d46;
           padding: 20px 0 30px 0;
+          height: auto;
         }
+
+        /* Div for containing what the style settings are for the target text*/
         #styleSettingsContainer {
           position: relative;
           border-radius: 5px;
@@ -74,45 +88,15 @@
           margin: 5px 0;
           opacity: 0.85;
           display: inline-block;
-          font-size: 17px;
-          line-height: 20px;
-          text-decoration: none; /* remove underline from anchors */
-        }
+          font-size: 17px;        }
 
-        /* style inputs and link buttons */
-        input,
-        .btn {
-          width: 100%;
-          padding: 12px;
-          border: none;
-          border-radius: 4px;
-          margin: 5px 0;
-          opacity: 0.85;
-          display: inline-block;
-          font-size: 17px;
-          line-height: 20px;
-          text-decoration: none; /* remove underline from anchors */
-        }
+        
 
-        input:hover,
-        .btn:hover {
-          opacity: 1;
-        }
 
-        /* submit button */
-        input[type=submit] {
-          background-color: #1abc9c;
-          color: white;
-          cursor: pointer;
-        }
-
-        input[type=submit]:hover {
-          background-color: #008080;
-        }
-
+        /* text area will take up 100% of available width and 10em height*/
         textarea{
             width:100%;
-            height:10em;
+            height:5em;
         }
 
         .row{
@@ -124,16 +108,17 @@
             margin:auto;
             padding: 0 50px;
             margin-top: 6px;
-            float:left;
         }
         /* Two columns will take up half the width and float, then clear to place them side by side */
         .doublecol {
-          width: 50%;
+          width: 49%;
           margin: auto;
-          padding: 0 50px;
+          padding: 0 0px;
           margin-top: 6px;
-          float:left;
+          display: inline-block;
         }
+
+        /* clear is used to take two floating div's and place them side by side */
         #clear {
             clear: both;
         }
@@ -197,6 +182,46 @@
             padding-bottom: 1px;
         }
 
+        /* style inputs and buttons */
+        .inputs{
+          width: 100%;
+          padding: 12px;
+          border: none;
+          border-radius: 4px;
+          margin-top: 5px;
+          margin-bottom: 0px;
+          opacity: 0.85;
+          display: inline-block;
+          font-size: 16px;
+        }
+        .btn {
+          width: 100%;
+          padding: 0px;
+          border: none;
+          border-radius: 4px;
+          margin: 0px;
+          opacity: 0.5;
+          display: inline-block;
+          background-color: #98c794;
+        }
+
+        /* When hover over buttons make them fully opaque*/
+        .btn:hover {
+          opacity: 1;
+        }
+
+        /* ResetToDefaultBtn is coloured red to distinguish it from rest*/
+        #resetToDefaultBtn{
+            background-color: #ec6066;
+            font-size: 20px;
+            color:white;
+            margin-top: 10px
+        }
+
+        #textBody{
+            word-break: break-all;
+            }
+
     </style>
     <title>Generic Site HomePage</title>
 </head>
@@ -211,59 +236,61 @@
     </div>
 
     <div class="mainDiv">
-
-        <p id="userEnteredText">Here is some sample Text, update below to replace with your preference.</p>
+        <div id="userTextContainer">
+            <p id="userEnteredText">Here is some sample Text, update below to replace with your preference.</p>
+        </div>
         <div id="customiseTextContainer">
                 <div class="row">
                     <div class="singleCol">
-                        <textarea id="updateUserTextArea"></textarea>
-                        <button id="updateText" onclick="changeText()">Update the above text</button>
+                        <textarea class="inputs" id="updateUserTextArea"></textarea>
+                        <button class="btn" id="updateText" onclick="changeText()">Update the above text</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="doublecol">
-                        <input id="headerColourTextBox" type="text">
-                        <button id="headerColourBtn" onclick="changeFontBackgroundColour()">Change Background Colour</button>
+                        <input class="inputs" id="headerColourTextBox" type="text">
+                        <button class="btn" id="headerColourBtn" onclick="changeFontBackgroundColour()">Change Background Colour</button>
                     </div>
                     <div class="doublecol">
-                        <input id="fontSizeTextBox" type="text">
-                        <button id="fontSizeBtn" onclick="changeFontSize()">Change Text Size</button>
+                        <input class="inputs" id="fontSizeTextBox" type="text">
+                        <button class="btn" id="fontSizeBtn" onclick="changeFontSize()">Change Text Size</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="doublecol">
-                        <input id="fontColourTextBox" type="text">
-                        <button id="fontColourTextBtn" onclick="changeFontColour()">Change Font Colour</button>
+                        <input class="inputs" id="fontColourTextBox" type="text">
+                        <button class="btn" id="fontColourTextBtn" onclick="changeFontColour()">Change Font Colour</button>
                     </div>
                     <div class="doublecol">
-                          <select id=fontFamilySelector>
+                          <select class="inputs" id=fontFamilySelector>
                             <option style="font-family:tahoma">Tahoma</option>
                             <option style="font-family:Arial">Arial</option>
                             <option style="font-family:Comic Sans MS">Comic Sans MS</option>
                             <option style="font-family:Fearless">Fearless</option>
                           </select>
 
-                        <button id="fontStyleBtn" onclick="changeFontFam()">Change Font Family</button>
+                        <button class="btn" id="fontStyleBtn" onclick="changeFontFam()">Change Font Family</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="doublecol">
-                        <input id="padding" type="text">
-                        <button id="fontColourTextBtn" onclick="changeFontColour()">Change padding</button>
+                        <input class="inputs" id="padding" type="text">
+                        <button class="btn" id="fontColourTextBtn" onclick="changeFontColour()">Change padding</button>
                     </div>
                     <div class="doublecol">
-                        <input id="margin" type="text">
-                        <button id="fontColourTextBtn" onclick="changeFontColour()">Change margin</button>
+                        <input class="inputs" id="margin" type="text">
+                        <button class="btn" id="fontColourTextBtn" onclick="changeFontColour()">Change margin</button>
                     </div>
                 </div>
-                <div id="clear"></div>
                 <div class="row">
                     <div class="singleCol">
-                        <button id="resetToDefaultBtn" onclick="resetToDefault()">Reset above to default</button>
+                        <button class="btn" id="resetToDefaultBtn" onclick="resetToDefault()">Reset above to default</button>
                     </div>
                 </div>
+                <!-- This clear is necessary to prevent container div from placing last row in padding, I think this is a result of having the previous doublecol float which when cleared pushes the last row down into the div's padding -->
         </div>
         <br>
+        <!-- in this div, display settings for the user entered text, handy as a check to see what font etc. has been set -->
         <div id="styleSettingsContainer">
             <p class="settingTitle">Text Body:</p>
             <p class="settingValue" id="textBody"></p>

@@ -54,6 +54,22 @@
         body{ padding:0;
             margin:0;
             }
+
+        /* linkContainer - div for holding links to relevant pages and a description of each */
+        .linkContainer {
+          position: relative;
+          border-radius: 5px;
+          width: 30%;
+          display: inline-block;
+          background-color:#343d46;
+          padding: 10px;
+        }
+
+        .linkContainer p{
+            color: white;
+        }
+
+
     </style>
     <title>Generic Site HomePage</title>
 </head>
@@ -72,11 +88,23 @@
 
     <div class="mainDiv">
         <p>Hello World!</p>
-        <a href="login.html">Link to Login page with form validation.</a>
-        <br>
-        <a href="styling.html">Link to Styling page</a>
-        <br>
-        <a href="visualisations.html">Link to Visualisation csv page</a>
+        <div class=linkContainer>
+            <a href="login.html">Link to Login page with form validation.</a>
+            <p> This is the link to the login page, within you can login using the following:</p>
+            <p> Email - </p>
+            <p> Password - </p>
+            <p> This page features form validation and on succesful login redirects you back to this page, on an unseccusful login it will tell you the correct email and password so no need to write down the above. </p>
+        </div>
+        <div class=linkContainer>
+            <a href="styling.html">Link to Styling page</a>
+            <p> This is the link to the styling page, within you make direct changes to elemnts styling and the DOM</p>
+            <p> You can enter your own body of text and alter the text colour, font etc. and see what effect that has </p>
+        </div>
+        <div class=linkContainer>
+            <a href="visualisations.html">Link to Visualisation csv page</a>
+            <p> This is the link to the d3 visualisation page where the Iris dataset csv is read in and graphed using d3</p>
+            <p> It features a bar chart and a scatter plot which you can edit the settings for</p>
+        </div>
         <br>
 
 
