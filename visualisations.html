@@ -39,14 +39,14 @@
     <div class="headerDiv">
         <div id="headerDivLeft">
             <a id="homeLink" href="home.html">
-                <img id="logoImg" src="images/genericSiteLogo.png">
+                <img id="logoImg" src="images/genericSiteLogo.png"/>
             </a>
         </div><div id="headerDivRight">
-            <a id="loginLink" href="login.html">Login</a>
-            <a id="stylingLink" href="styling.html">Styling</a>
-            <a id="visLink" href="Visualisations.html">Visualisations</a>
+            <!-- because of whitespace between elements, have to remove whitespace between <button> declarations-->
+            <button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button>
         </div>
     </div>
+
 
     <div class="mainDiv">
         

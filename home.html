@@ -4,22 +4,35 @@
 
     <!-- for html, body and header css styling - as it is consistent across different pages have shared external css sheet -->
     <link rel="stylesheet" type="text/css" href="externalstylesheet.css">
-    <style>
+    <!-- I wanted to add a carousel and after getting a working JS version I decided instead it would be neater to include a bootstrap implementation, based on frequent mentions online-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
+        <style>
 
-        /* linkContainer - div for holding links to relevant pages and a description of each */
-        .linkContainer {
-          position: relative;
-          border-radius: 5px;
-          width: 33%;
-          display: inline-block;
-          background-color:#343d46;
-          padding: 10px;
+        .btnHeader{
+            border:none;
+            height:100%;
+            position: relative;
+            margin-right: 5px;
+            width: 15%;
+            background-color: #c695c6;
+            opacity: 70%;
         }
 
+        .btnHeader:hover{
+            opacity: 100%;
+            cursor:pointer;
+        }
+        /* p tag inside linkeContainer class has white text*/
         .linkContainer p{
             color: white;
         }
 
+        /* all button class have max width, no padding, no border, have border radius to give them curves
+            opacity is used so that buttons pop when hovering over them
+            display:; inline-block used to allow buttons to appear on same line*/
         .btn {
           width: 100%;
           padding: 0px;
@@ -35,7 +48,45 @@
         .btn:hover {
           opacity: 1;
         }
+
+        /* row class display set to flex, this in combination with below linkContainer class having flex 1 ensures that the side by side div's of that class all have same height */
+        .row{
+            display: flex;
+        }
         
+        /* linkContainer - div for holding links to relevant pages and a description of each */
+        .linkContainer {
+          position: relative;
+          border-radius: 5px;
+          width: 33%;
+          display: inline-block;
+          background-color:#343d46;
+          padding: 10px;
+          margin:10px;
+          flex:1;
+        }
+
+        .slidesDiv {display:none;}
+
+        .blackArrowLeft {
+            position: absolute;
+            top:50%;
+            left:0%;
+        }
+        .blackArrowRight {
+            position: absolute;
+            top:50%;
+            right:0%;
+        }
+
+        .carouselContainer{
+            max-width: 50%;
+            position: relative;
+            margin-left: 25%;
+            margin-right: 25%;
+            margin-top: 1%;
+        }
+
     </style>
     <title>Generic Site HomePage</title>
 </head>
@@ -43,16 +94,55 @@
     <div class="headerDiv">
         <div id="headerDivLeft">
             <a id="homeLink" href="home.html">
-                <img id="logoImg" src="images/genericSiteLogo.png">
+                <img id="logoImg" src="images/genericSiteLogo.png"/>
             </a>
         </div><div id="headerDivRight">
-            <a id="loginLink" href="login.html">Login</a>
-            <a id="stylingLink" href="styling.html">Styling</a>
-            <a id="visLink" href="visualisations.html">Visualisations</a>
+            <!-- because of whitespace between elements, have to remove whitespace between <button> declarations-->
+            <button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button>
         </div>
     </div>
 
+
+    <div class="carouselContainer">
+
+        <div class="slidesDiv">
+          <img src="images/capture.png" style="width:100%">
+          <div class="w3-display-bottomleft w3-large w3-container w3-padding-16 w3-black">
+            French Alps
+          </div>
+        </div>
+
+        <div class="slidesDiv">
+          <img src="images/genericSiteLogo.png" style="width:100%">
+          <div class="w3-display-bottomright w3-large w3-container w3-padding-16 w3-black">
+            Northern Lights
+          </div>
+        </div>
+
+        <div class="slidesDiv">
+          <img src="images/capture.png" style="width:100%">
+          <div class="w3-display-topleft w3-large w3-container w3-padding-16 w3-black">
+            Beautiful Mountains
+          </div>
+        </div>
+
+        <div class="slidesDiv">
+          <img src="images/capture.png" style="width:100%">
+          <div class="w3-display-topright w3-large w3-container w3-padding-16 w3-black">
+            The Rain Forest
+          </div>
+        </div>
+
+        <!-- Arrow buttons for navigating carousel, onclick calls function to change shown image-->
+        <button class="blackArrowLeft" onclick="plusDivs(-1)">&#10094;</button>
+        <button class="blackArrowRight" onclick="plusDivs(1)">&#10095;</button>
+
+    </div>
+
+
+
     <div class="mainDiv">
+        <div class=row>
         <div class=linkContainer>
             <button class="btn" onclick="window.location.href = 'login.html'">Go to login page</button>
             <p> This is the link to the login page, within you can login using the following:</p>
@@ -70,12 +160,47 @@
             <p> This is the link to the d3 visualisation page where the Iris dataset csv is read in and graphed using d3</p>
             <p> It features a bar chart and a scatter plot which you can edit the settings for</p>
         </div>
-        <br>
+    </div>
+        
 
 
     </div>
 </body>
 <script>
 
+    // slideDiv points at DOM for slidesDiv class
+    let slideDiv = document.getElementsByClassName("slidesDiv");
+    //slideIndex defaults to 1 to show first slide on opening page
+    var slideIndex = 1;
+    //showDivs called immediately to display first slide Div
+    showDivs(slideIndex);
+
+
+    //increments/decrements current slide to show
+    function plusDivs(n) {
+      showDivs(slideIndex += n);
+    }
+
+    //function to make appropriate slide visible
+    function showDivs(n) {
+
+        //if current slide is greater than number of available slides set slide index to 1
+        if (n > slideDiv.length) {
+            alert("Never")
+            console.log(slideDiv.length)
+            slideIndex = 1
+        }
+        //if going backwards and slide it's looking for is 0 wrap around to last slide (reverse of above behaviour)
+        if (n < 1) {
+            slideIndex = slideDiv.length
+        }
+
+        //Make all slides not visible
+        for (var i = 0; i < slideDiv.length; i++) {
+        slideDiv[i].style.display = "none";  
+        }
+        //display chosen slide
+        slideDiv[slideIndex-1].style.display = "block";  
+    }
 </script>
 </html>

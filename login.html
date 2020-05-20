@@ -42,6 +42,7 @@
         input[type=submit]:hover {
           background-color: #008080;
         }
+
         /* Two columns will take up half the width and float, then clear to place them side by side */
         .col {
           width: 50%;
@@ -79,6 +80,11 @@
             text-decoration: none;
         }
 
+        #signUpBtn:hover{
+            cursor:pointer;
+            opacity: 1;
+        }
+        
         #forgotPwdBtn{
             background-color: #c695c6;
             width: 100%;
@@ -93,6 +99,11 @@
             text-decoration: none;
         }
 
+        #forgotPwdBtn:hover{
+            cursor:pointer;
+            opacity: 1;
+        }
+
         
 
     </style>
@@ -102,12 +113,11 @@
     <div class="headerDiv">
         <div id="headerDivLeft">
             <a id="homeLink" href="home.html">
-                <img id="logoImg" src="images/genericSiteLogo.png">
+                <img id="logoImg" src="images/genericSiteLogo.png"/>
             </a>
         </div><div id="headerDivRight">
-            <a id="loginLink" href="login.html">Login</a>
-            <a id="stylingLink" href="styling.html">Styling</a>
-            <a id="visLink" href="visualisations.html">Visualisations</a>
+            <!-- because of whitespace between elements, have to remove whitespace between <button> declarations-->
+            <button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button>
         </div>
     </div>
 
