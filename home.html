@@ -1,65 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <!-- for html, body and header css styling - as it is consistent across different pages have shared external css sheet -->
+    <link rel="stylesheet" type="text/css" href="externalstylesheet.css">
     <style>
-        body
-            {
-            font-family:tahoma
-            }
-        /* headerDiv class - div for pages header, scrolls down with  */
-        .headerDiv{
-            background: #1abc9c;
-            color: white;
-            font-size: 30px;
-            width: 100%;
-            display: block;
-            position:sticky;
-            text-align:center;
-            top:0;
-            }
-
-        .headerDiv div{
-            display: inline-block;
-            zoom: 1; /* Trigger hasLayout */
-            width: 33%;
-            text-align: center;
-        }
-        /* maindDiv class- div for containing rest of html page elements*/
-        .mainDiv{
-            margin:5px;
-            padding:5px;
-        }
-        /* homeLink - ahref for link to home, want it perfectly centered*/
-        /*
-        #homeLink{
-            position:relative;
-        }
-
-        #loginLink{
-            position:absolute;
-            left: 1%;
-        }
-        #logoutLink{
-            position:absolute;
-            right: 1%;
-        }
-        */
-        .headerP{
-            padding:0;
-            margin:0;
-            }
-        html{ padding:0;
-            margin:0;
-            }
-        body{ padding:0;
-            margin:0;
-            }
 
         /* linkContainer - div for holding links to relevant pages and a description of each */
         .linkContainer {
           position: relative;
           border-radius: 5px;
-          width: 30%;
+          width: 33%;
           display: inline-block;
           background-color:#343d46;
           padding: 10px;
@@ -69,39 +20,53 @@
             color: white;
         }
 
+        .btn {
+          width: 100%;
+          padding: 0px;
+          border: none;
+          border-radius: 4px;
+          margin: 0px;
+          opacity: 0.5;
+          display: inline-block;
+          background-color: #98c794;
+        }
 
+        /* When hover over buttons make them fully opaque*/
+        .btn:hover {
+          opacity: 1;
+        }
+        
     </style>
     <title>Generic Site HomePage</title>
 </head>
 <body>
     <div class="headerDiv">
-        <div>
+        <div id="headerDivLeft">
+            <a id="homeLink" href="home.html">
+                <img id="logoImg" src="images/genericSiteLogo.png">
+            </a>
+        </div><div id="headerDivRight">
             <a id="loginLink" href="login.html">Login</a>
-        </div><div>
-            <a id="homeLink" href="home.html">Home</a>
-        </div><div>
-            <a id="logoutLink" href="home.html">Logout</a>
+            <a id="stylingLink" href="styling.html">Styling</a>
+            <a id="visLink" href="visualisations.html">Visualisations</a>
         </div>
-
-        <p class="headerP">Hello Toolbar</p>
     </div>
 
     <div class="mainDiv">
-        <p>Hello World!</p>
         <div class=linkContainer>
-            <a href="login.html">Link to Login page with form validation.</a>
+            <button class="btn" onclick="window.location.href = 'login.html'">Go to login page</button>
             <p> This is the link to the login page, within you can login using the following:</p>
-            <p> Email - </p>
-            <p> Password - </p>
+            <p> Email - <em>user@email.com</em></p>
+            <p> Password - <em>aA1!</em></p>
             <p> This page features form validation and on succesful login redirects you back to this page, on an unseccusful login it will tell you the correct email and password so no need to write down the above. </p>
         </div>
         <div class=linkContainer>
-            <a href="styling.html">Link to Styling page</a>
+            <button class="btn" onclick="window.location.href = 'styling.html'">Go to Styling page</button>
             <p> This is the link to the styling page, within you make direct changes to elemnts styling and the DOM</p>
             <p> You can enter your own body of text and alter the text colour, font etc. and see what effect that has </p>
         </div>
         <div class=linkContainer>
-            <a href="visualisations.html">Link to Visualisation csv page</a>
+            <button class="btn" onclick="window.location.href = 'Visualisations.html'">Go to visualisation page</button>
             <p> This is the link to the d3 visualisation page where the Iris dataset csv is read in and graphed using d3</p>
             <p> It features a bar chart and a scatter plot which you can edit the settings for</p>
         </div>

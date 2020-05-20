@@ -1,0 +1,84 @@
+        body{
+            font-family:tahoma
+            }
+        
+        /* html has 0 padding and margin to ensure header fit's fully across*/
+        html{ padding:0;
+            margin:0;
+            }
+        /* body has 0 padding and margin to ensure header fit's fully across
+            using a linear gradient to provide a backdrop going from white to grey
+            background-attachment: fixed; is used to stretch body across window size, otherwise the gradient repeats 
+            at the end of the elements within body*/
+        body{ padding:0;
+            margin:0;
+            background-image: linear-gradient(lightgrey, grey);
+            background-attachment: fixed;
+            }
+
+
+        /*Border box sizing is telling the various elements to account for border and padding when setting size */
+        * {box-sizing: border-box}
+
+        /* headerDiv class - div for pages header, scrolls down with  */
+        .headerDiv{
+            background: #1abc9c;
+            color: white;
+            font-size: 30px;
+            width: 100%;
+            display: block;
+            position:sticky;
+            top:0;
+            vertical-align: top;
+            }
+        
+        .headerDiv div{
+            display: inline-block;
+        }
+
+        #logoImg{
+            width:25%;
+            margin:0px;
+            padding:0px;
+            display: block;
+            opacity: 90%;
+            box-shadow: black;
+
+        }
+
+        #logoImg:hover{
+            opacity: 100%;
+        }
+
+        #logoDiv{
+            align-content: left;
+        }
+
+        #headerDivRight{
+            width: 50%;
+            height: 100%;
+            text-align: right;
+            vertical-align: top;
+        }
+
+
+        #headerDivLeft{
+            width: 50%;
+            vertical-align: bottom;
+        }
+        
+
+        /* headerP class - has 0 padding and margin to ensure header fit's fully across*/
+        .headerP{
+            padding:0;
+            margin:0;
+            }
+        /* maindDiv class- div for containing rest of html page elements*/
+        .mainDiv{
+            margin:5px;
+            padding:5px;
+        }
+
+        #homeLink{
+            float: left;
+        }
