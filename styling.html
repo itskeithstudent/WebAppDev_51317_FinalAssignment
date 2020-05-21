@@ -173,16 +173,17 @@
     <title>Generic Site HomePage</title>
 </head>
 <body>
-    <div class="headerDiv">
-        <div id="headerDivLeft">
-            <a id="homeLink" href="home.html">
-                <img id="logoImg" src="images/genericSiteLogo.png"/>
-            </a>
-        </div><div id="headerDivRight">
-            <!-- because of whitespace between elements, have to remove whitespace between <button> declarations-->
-            <button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button>
-        </div>
-    </div>
+    <nav>
+        <ul>
+          <li id="homeListItem">
+                <a id="homeLink" href="home.html">
+                    <img id="logoImg" src="images/genericSiteLogo.png"/>
+                </a></li>
+          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
+          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
+          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
+        </ul>
+    </nav>
 
 
     <div class="mainDiv">
@@ -224,14 +225,15 @@
                 </div>
                 <div class="row">
                     <div class="doublecol">
-                        <input class="inputs" id="padding" type="text">
-                        <button class="btn" id="fontColourTextBtn" onclick="changeFontColour()">Change padding</button>
+                        <input class="inputs" id="paddingTextBox" type="text">
+                        <button class="btn" id="paddingBtn" onclick="changePadding()">Change Padding</button>
                     </div>
                     <div class="doublecol">
-                        <input class="inputs" id="margin" type="text">
-                        <button class="btn" id="fontColourTextBtn" onclick="changeFontColour()">Change margin</button>
+                        <input class="inputs" id="marginTextBox" type="text">
+                        <button class="btn" id="marginBtn" onclick="changeMargin()">Change Margin</button>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="singleCol">
                         <button class="btn" id="resetToDefaultBtn" onclick="resetToDefault()">Reset above to default</button>
@@ -251,7 +253,11 @@
             <p class="settingTitle">Text Background Colour:</p>
             <p class="settingValue" id="textBackgroundColourSetting"></p>    
             <p class="settingTitle">Font Family:</p>
-            <p class="settingValue" id="textFontFamSetting"></p>             
+            <p class="settingValue" id="textFontFamSetting"></p>     
+            <p class="settingTitle">Padding:</p>
+            <p class="settingValue" id="textPaddingSetting"></p>    
+            <p class="settingTitle">Margin:</p>
+            <p class="settingValue" id="textMarginSetting"></p>          
         </div>
     </div>
     
@@ -271,12 +277,16 @@
     let userEntryFontSizeField = document.getElementById("fontSizeTextBox");
     let userEntryFontColourField = document.getElementById("fontColourTextBox");
     let userEntryFontFamilyDropDown = document.getElementById("fontFamilySelector");
+    let userEntryPaddingField = document.getElementById("paddingTextBox");
+    let userEntryMarginField = document.getElementById("marginTextBox");
 
     let userEnteredTextSettings = document.getElementById("textBody");
     let userEnteredFontSizeSettings = document.getElementById("textSizeSetting");
     let userEnteredFontColourSettings = document.getElementById("textColourSetting");
     let userEnteredTextBackgroundColourSettings = document.getElementById("textBackgroundColourSetting");
     let userEnteredTextFontFamSettings = document.getElementById("textFontFamSetting");
+    let userEnteredPaddingSettings = document.getElementById("textPaddingSetting");
+    let userEnteredMarginSettings = document.getElementById("textMarginSetting");
 
     //changes the background color of customisedTextField
     changeFontBackgroundColour = function(){
@@ -296,7 +306,6 @@
     //changes the font color of customisedTextField
     changeFontColour = function(){
         fontColour = userEntryFontColourField.value;
-        console.log(fontColour)
         customisedTextField.style.color = fontColour;
         tagStyleSettings();
     }
@@ -304,7 +313,6 @@
     //changes the body of text of customisedTextField
     changeText = function(){
         userText = userEntryTextField.value;
-        //console.log(userText)
         customisedTextField.innerHTML = userText;
         tagStyleSettings();
     }
@@ -313,6 +321,20 @@
         //userEntryFontFamilyDropDown.options gives us dict object, then using the .selectedIndex and .text we get the actual value selected
         var text = userEntryFontFamilyDropDown.options[userEntryFontFamilyDropDown.selectedIndex].text;
         customisedTextField.style.fontFamily = text;
+        tagStyleSettings();
+    }
+
+    function changeMargin(){
+        var userMargin = userEntryMarginField.value;
+        console.log(userMargin)
+        customisedTextField.style.margin = userMargin;
+        tagStyleSettings();
+    }
+
+    function changePadding(){
+        var userPadding = userEntryPaddingField.value;
+        console.log(userPadding)
+        customisedTextField.style.padding = userPadding;
         tagStyleSettings();
     }
 
@@ -337,12 +359,16 @@
             for that property using style['color'] etc.
         */
         let style = getComputedStyle(customisedTextField)
+        console.log(style)
 
         userEnteredTextSettings.innerHTML = customisedTextField.innerHTML;
         userEnteredFontSizeSettings.innerHTML = style['font-size'];
         userEnteredFontColourSettings.innerHTML = style['color'];
         userEnteredTextBackgroundColourSettings.innerHTML = style['background-color'];
         userEnteredTextFontFamSettings.innerHTML = style['font-family'];
+        //For these last two style['margin'] and style['padding'] don't exist, so as a workaround because padding and margin are set evenly it doesn't matter which side of margin and padding to pick
+        userEnteredMarginSettings.innerHTML = style['margin-top'];
+        userEnteredPaddingSettings.innerHTML = style['padding-top'];
     }
     //call initially to load default CSS properties for customisedTextField
     tagStyleSettings();

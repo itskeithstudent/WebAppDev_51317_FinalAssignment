@@ -36,16 +36,17 @@
     <title>Generic Site HomePage</title>
 </head>
 <body>
-    <div class="headerDiv">
-        <div id="headerDivLeft">
-            <a id="homeLink" href="home.html">
-                <img id="logoImg" src="images/genericSiteLogo.png"/>
-            </a>
-        </div><div id="headerDivRight">
-            <!-- because of whitespace between elements, have to remove whitespace between <button> declarations-->
-            <button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button>
-        </div>
-    </div>
+    <nav>
+        <ul>
+          <li id="homeListItem">
+                <a id="homeLink" href="home.html">
+                    <img id="logoImg" src="images/genericSiteLogo.png"/>
+                </a></li>
+          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
+          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
+          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
+        </ul>
+    </nav>
 
 
     <div class="mainDiv">

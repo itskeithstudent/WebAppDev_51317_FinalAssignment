@@ -16,6 +16,58 @@
             background-attachment: fixed;
             }
 
+        /* want no bullet points for unordered list in nav and overflow hidden, without this items appear outside horizontal navigation bar
+        */
+        nav ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+
+        /* using height: 8vh; to set nav to be 8% of window height
+        */
+        nav li * {
+            height:8vh;
+            display: block;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        /* maindDiv class- div for containing rest of html page elements*/
+        .mainDiv{
+            margin:5px;
+            padding:5px;
+        }
+
+        /* homeListItem contains link to home page, floats left to stick to left of navigation bar */
+        #homeListItem{
+            float: left;
+        }
+        /* homeLink contains logo image, want it to entirely fill image */
+        #homeLink{
+            padding:0px;
+        }
+
+        /* navListItemRight class contains links to remaining pages, floats to right of navigation bar*/
+        .navListItemRight{
+            float: right;
+        }
+
+        .btnHeader{
+            border:none;
+            height:8vh;
+            width: 100%;
+            background-color: #c695c6;
+            opacity: 70%;
+        }
+
+        .btnHeader:hover{
+            opacity: 100%;
+            cursor:pointer;
+        }
 
         /*Border box sizing is telling the various elements to account for border and padding when setting width and height*/
         * {box-sizing: border-box}
@@ -38,7 +90,7 @@
         }
 
         #logoImg{
-            width:100%;
+            height:100%;
             margin:0px;
             padding:0px;
             display: block;
@@ -51,51 +103,13 @@
             opacity: 100%;
         }
 
-        #logoDiv{
-            align-content: left;
-        }
-
-        #headerDivRight{
-            width: 92%;
-            text-align: right;
-            overflow: hidden;
-            vertical-align: top;
-        }
-
-
-        #headerDivLeft{
-            width: 8%;
-            vertical-align: bottom;
-        }
+        
         
 
-        /* headerP class - has 0 padding and margin to ensure header fit's fully across*/
-        .headerP{
-            padding:0;
-            margin:0;
-            }
-        /* maindDiv class- div for containing rest of html page elements*/
-        .mainDiv{
-            margin:5px;
-            padding:5px;
-        }
+        
 /*
         #homeLink{
             float: left;
         }
 */
 
-.btnHeader{
-            border:none;
-            height:100%;
-            position: relative;
-            margin-right: 5px;
-            width: 15%;
-            background-color: #c695c6;
-            opacity: 70%;
-        }
-
-        .btnHeader:hover{
-            opacity: 100%;
-            cursor:pointer;
-        }
