@@ -36,6 +36,8 @@
             margin: 5px;
         }
 
+        /* #scatterTempText - this tag id get's added on hovering over scatterplot point
+         text is white and with the texht-shadow get's a black outline for visibility*/
         #scatterTempText{
             fill:white;
             text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -68,6 +70,7 @@
         <div id="d3Container"></div>
         <!-- d3SettingsContainerDiv holds all the settings for controlling d3 visualisations -->
         <div id="d3SettingsContainerDiv">
+            <!-- div for containing title for settings-->
             <div id ="d3SettingsContainerHeaderDiv">
                 <p id="d3SettingsContainerHeader"> Settings for above chart's </p>
             </div>
@@ -112,7 +115,11 @@
             <!-- button to generate new trends -->
             <button id="generateTrendBtn" onclick="generateTrend()">Change Width of D3 SVG's</button>
             <p>Transition Type for bar chart</p>
-            <input type="text" id="transition" placeholder="ease">
+            <select id=transition>
+                <option selected="true">Linear</option>
+                <option>Bounce</option>
+                <option>Exponential</option>
+            </select>
             <!-- button to generate new trends -->
             <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
         </div>
@@ -133,6 +140,8 @@
         */
         //this will be used to set what column to pick data from and how to label y axis
         let yDropDownInput = document.getElementById("selectYDropDown");
+        //this will be used to set what column to pick data from and how to label y axis
+        let xDropDownInput = document.getElementById("selectXDropDown");
         //textField for selecting colour for setosa species 
         let setosaColorInput = document.getElementById("setosaColor");
         //textField for selecting colour for versicolor species 
@@ -145,14 +154,21 @@
         let d3WidthInput = document.getElementById("d3Width");
         //textField for setting transition type
         let transitionInput = document.getElementById("transition");
+
+        //let transitionInput = document.getElementById("transition");
+
+        //let transitionInput = document.getElementById("transition");
         /*
             input variables from DOM
         */
         //get the text for selected option in dropdown
         //yParam is used for setting column used for y axis
         //xParam is used for setting column used for x axis
-        let yParam = yDropDownInput.options[document.getElementById("selectYDropDown").selectedIndex].text;
-        let xParam = yDropDownInput.options[document.getElementById("selectXDropDown").selectedIndex].text;
+        let yParam = yDropDownInput.options[yDropDownInput.selectedIndex].text;
+        let xParam = xDropDownInput.options[xDropDownInput.selectedIndex].text;
+
+        //selectedTransition get's the selected transition value from the dropdown
+        let selectedTransition = transitionInput.options[transitionInput.selectedIndex].text;
 
         //get colors for different species
         let setosaColor = setosaColorInput.value;
@@ -161,6 +177,9 @@
 
         let d3Height = d3HeightInput.value;
         let d3Width = d3WidthInput.value;
+
+        //let userDelay = userDelayInput.value;
+        //let userDuration = userDurationInput.value;
 
         if(d3Height === ""){
             d3Height = 475;
@@ -209,13 +228,44 @@
             var svgHeight = d3Height;
             var svgWidth = d3Width;
             //setting height and width for y and x scaling range and size of chart area
-            var height = svgHeight-75;
+            var height = svgHeight-100;
             var width = svgWidth-75;
+            //150 total rows of data so divide the specified width by 150 and minus by two to allow for gaps
+            var barWidth = width/150 - 2;
 
             //dataCount will be used to keep track of how many individual bar's will be needed
             var dataCount = data.length;
             var gap = 1; //gap of 1 pixel between bar's
-            //console.log(dataCount);
+
+            //if linear selected use d3.easeLinear
+            if( selectedTransition === 'Linear'){
+                var t = d3.transition()
+                .delay(1000)
+                .duration(2500)
+                .ease(d3.easeLinear);  
+            }
+            //if linear selected use d3.easeExp
+            else if(selectedTransition === 'Exponential'){
+                var t = d3.transition()
+                .delay(1000)
+                .duration(2500)
+                .ease(d3.easeExp);  
+            }
+            //if linear selected use d3.easeBounce
+            else if(selectedTransition === 'Bounce'){
+                console.log("Bounce")
+                var t = d3.transition()
+                .delay(1000)
+                .duration(2500)
+                .ease(d3.easeBounce);  
+            }
+            //else just use ease()
+            else{
+                var t =d3.transition()
+                .delay(1000)
+                .duration(2500)
+                .ease()
+            }
 
             //svgBarChart is svg for containing bar chart
             var svgBarChart = d3.select("#d3Container").append("svg")
@@ -226,20 +276,20 @@
             var yScale = d3.scaleLinear()
                 .domain([0,d3.max(data, function(d){
                     return (d[yParam]);
-                })])
-                .range([height,0]);
+                })]) //domain goes from 0 to max value for currently selected parameter on y axis
+                .range([height,0]); //range goes from user entered height to 0
 
             //xScaleBar specific for bar chart as barchart x won't change and is scaleBand
             var xScaleBar =d3.scaleBand()
-                .domain([0,150])
-                .range([0,width]);
+                .domain([0,150]) //domain goes from 0 to 150 total number of rows in Iris.csv
+                .range([0,width]); //range goes from 0 to user specified width
 
             //xScaleLinear scale for x axis on scatter as this will vary
             var xScaleScatter = d3.scaleLinear()
                 .domain([0,d3.max(data, function(d){
                     return(d[xParam])
-                })])
-                .range([0,width]);
+                })]) //domain goes from 0 to max value for currently selected parameter on x axis
+                .range([0,width]); //range goes from 0 to user specified width
 
             //sets the yAxis using the yScale
             var yAxis = d3.axisLeft()
@@ -262,16 +312,36 @@
                 .append('rect')
                 //fill transitions from white to specified colours by species
                 .attr("fill", "white")
-                    .attr('x', function(d, i){
-                        return 50 + (i*(width/dataCount))
+                .attr('x', function(d, i){
+                    return 50 + (i*(width/dataCount))
+                })
+                .attr('y', function(d){
+                return yScale((d[yParam]));
+                })
+                .attr("width", barWidth)
+                .on("mouseover", function(d,i){
+                        // Specify where to put label of text
+                        svgBarChart.append("text")
+                            .attr("id","scatterTempText")
+                            .attr("x", function() { return 50 + (i*(width/dataCount))} )
+                            .attr("y", function() { return yScale(d[yParam]);} )
+                            .style("background-color", "white")
+                            .text(d[yParam])
+                        
+                        console.log(d3.select(this))
+                            
                     })
-                    .attr('y', function(d){
-                    return yScale((d[yParam]));
+                    .on("mouseout", function(d,i) {  
+                        d3.select(this).attr(
+                              "r", 3
+                            )    
+                        .attr(
+                              "opacity", 1
+                            )   
+                        //console.log(d3.select("#scatterTempText").value)
+                        d3.select("#scatterTempText").remove();
                     })
-                    .attr("width", 2)
-                    .transition()
-                    .delay(1000)
-                    .duration(2500)
+                .transition(t)
                 //horizontal positioning where bar starts from
                 .attr('x', function(d, i){
                     return 50 + (i*(width/dataCount));
@@ -281,22 +351,18 @@
                     return yScale((d[yParam]));
                 })
                 //bar's are 2 pixels wide
-                .attr('width', 2)
+                .attr('width', barWidth)
                 //height is height of svg - the yscaled value of current param value
                 .attr('height', function(d){
                     return height - yScale(d[yParam]);
                 })
                 //colour bar's based on species colour
-                .attr('fill', function(d){
+                .style('fill', function(d){
                     if(d.species.includes("setosa")) {return setosaColor;}
                     else if (d.species.includes("virginica")) {return virginicaColor;}
                     else if (d.species.includes("versicolor")) {return versicolorColor;}
                 })
                 .attr("transform", "translate(0,5)");
-
-            barRectangles.on("mouseover", function() {
-                    d3.select(this).attr("fill", "red");
-                });
                 
             //append group for yaxis
             svgBarChart.append("g")

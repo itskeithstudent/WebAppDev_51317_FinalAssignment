@@ -4,11 +4,6 @@
 
     <!-- for html, body and header css styling - as it is consistent across different pages have shared external css sheet -->
     <link rel="stylesheet" type="text/css" href="externalstylesheet.css">
-    <!-- I wanted to add a carousel and after getting a working JS version I decided instead it would be neater to include a bootstrap implementation, based on frequent mentions online-->
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
         <style>
 
         
@@ -53,19 +48,8 @@
           flex:1;
         }
 
-        .slidesDiv {display:none;}
-
-        .blackArrowLeft {
-            position: absolute;
-            top:50%;
-            left:0%;
-        }
-        .blackArrowRight {
-            position: absolute;
-            top:50%;
-            right:0%;
-        }
-
+        
+        /* .carouselContainer - class for holding elements for slide carousel*/
         .carouselContainer{
             max-width: 50%;
             position: relative;
@@ -74,9 +58,31 @@
             margin-top: 1%;
         }
 
+        /* .slidesDiv - div class for slide carousel*/
+        .slidesDiv {display:none;} /* display none by default as we only want one visible at a timw*/
 
+        /* blackArrowLeft - black navigational arrow to the left for slide carousel*/
+        .blackArrowLeft {
+            position: absolute; /* want it to always be in the middle left side of slide so setting position absolute*/
+            background-color: black;
+            border: none;
+            color:white;
+            top:50%;
+            left:0%;
+        }
+        /* blackArrowLeft - black navigational arrow to the right for slide carousel*/
+        .blackArrowRight {
+            position: absolute; /* want it to always be in the middle right side of slide so setting position absolute*/
+            background-color: black;
+            border: none;
+            color:white;
+            top:50%;
+            right:0%;
+        }
+
+        /* .slidesBottomTextDiv - bottom text annotating the current slide*/
         .slidesBottomTextDiv{
-            position: absolute;
+            position: absolute; /* want it to always be in the bottom left corner so setting position absolute*/
             bottom: 5%;
             left: 2.5%;
             padding:5px;
@@ -105,41 +111,50 @@
         </ul>
     </nav>
 
-
+    <!-- carouselContainer div for containing elements for carousel slideshow, shows examples image of each the linked pages -->
     <div class="carouselContainer">
-
+        <!-- slidesDiv class is all display none by default, using index in JS can iterate through every member of this class and make visible one at a time -->
         <div class="slidesDiv">
-          <img src="images/genericSiteLogo.png"  style="width:100%">
-          <div class="slidesBottomTextDiv">
-            Site Logo
-          </div>
+            <!-- Generic Logo for the site -->
+            <img src="images/genericSiteLogo.png"  style="width:100%">
+            <!-- Description of image -->
+            <div class="slidesBottomTextDiv">
+                Site Logo
+            </div>
         </div>
 
         <div class="slidesDiv">
-          <img src="images/loginExample.png" style="width:100%">
-          <div class="slidesBottomTextDiv">
-            Example of Login Page
-          </div>
+            <!-- Image for login page -->
+            <img src="images/loginExample.png" style="width:100%">
+            <div class="slidesBottomTextDiv">
+                Example of Login Page
+            </div>
         </div>
 
         <div class="slidesDiv">
-          <img src="images/stylingExample.png" style="width:100%">
-          <div class="slidesBottomTextDiv">
-            Example of Styling Page
-          </div>
+            <!-- Image for styling page -->
+            <img src="images/stylingExample.png" style="width:100%">
+            <!-- Description of image -->
+            <div class="slidesBottomTextDiv">
+                Example of Styling Page
+            </div>
         </div>
 
         <div class="slidesDiv">
-          <img src="images/stylingSettingsExample.png" style="width:100%">
-          <div class="slidesBottomTextDiv">
-            Example of Styling Page Settings
-          </div>
+            <!-- Image for styling bottom half of page -->
+            <img src="images/stylingSettingsExample.png" style="width:100%">
+            <!-- Description of image -->
+            <div class="slidesBottomTextDiv">
+                Example of Styling Page Settings
+            </div>
         </div>
         <div class="slidesDiv">
-          <img src="images/capture.png" style="width:100%">
-          <div class="slidesBottomTextDiv">
-            The Rain Forest
-          </div>
+            <!-- Image for ... page -->
+            <img src="images/capture.png" style="width:100%">
+            <!-- Description of image -->
+            <div class="slidesBottomTextDiv">
+                XXXXXXXXX
+            </div>
         </div>
 
         <!-- Arrow buttons for navigating carousel, onclick calls function to change shown image-->
@@ -149,26 +164,31 @@
     </div>
 
 
-<!-- mainDiv used for containing rest of window below the navbar-->
+    <!-- mainDiv used for containing rest of window below the navbar-->
     <div class="mainDiv">
+        <!-- row div contains everything within in one horizontal layer-->
         <div class=row>
-        <div class=linkContainer>
-            <button class="btn" onclick="window.location.href = 'login.html'">Go to login page</button>
-            <p> This is the link to the login page, within you can login using the following:</p>
-            <p> Email - <em>user@email.com</em></p>
-            <p> Password - <em>aA1!</em></p>
-            <p> This page features form validation and on succesful login redirects you back to this page, on an unseccusful login it will tell you the correct email and password so no need to write down the above. </p>
-        </div>
-        <div class=linkContainer>
-            <button class="btn" onclick="window.location.href = 'styling.html'">Go to Styling page</button>
-            <p> This is the link to the styling page, within you make direct changes to elemnts styling and the DOM</p>
-            <p> You can enter your own body of text and alter the text colour, font etc. and see what effect that has </p>
-        </div>
-        <div class=linkContainer>
-            <button class="btn" onclick="window.location.href = 'Visualisations.html'">Go to visualisation page</button>
-            <p> This is the link to the d3 visualisation page where the Iris dataset csv is read in and graphed using d3</p>
-            <p> It features a bar chart and a scatter plot which you can edit the settings for</p>
-        </div>
+            <!-- linkContainer div's are placed side by side. Hold link's and a brief description of each page-->
+            <!-- this linkContainer is for the login page-->
+            <div class=linkContainer>
+                <button class="btn" onclick="window.location.href = 'login.html'">Go to login page</button>
+                <p> This is the link to the login page, within you can login using the following:</p>
+                <p> Email - <em>user@email.com</em></p>
+                <p> Password - <em>aA1!</em></p>
+                <p> This page features form validation and on succesful login redirects you back to this page, on an unseccusful login it will tell you the correct email and password so no need to write down the above. </p>
+            </div>
+            <!-- this linkContainer is for the styling page-->
+            <div class=linkContainer>
+                <button class="btn" onclick="window.location.href = 'styling.html'">Go to Styling page</button>
+                <p> This is the link to the styling page, within you make direct changes to elemnts styling and the DOM</p>
+                <p> You can enter your own body of text and alter the text colour, font etc. and see what effect that has </p>
+            </div>
+            <!-- this linkContainer is for the visualisations page-->
+            <div class=linkContainer>
+                <button class="btn" onclick="window.location.href = 'Visualisations.html'">Go to visualisation page</button>
+                <p> This is the link to the d3 visualisation page where the Iris dataset csv is read in and graphed using d3</p>
+                <p> It features a bar chart and a scatter plot which you can edit the settings for</p>
+            </div>
     </div>
         
 

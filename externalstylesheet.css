@@ -62,6 +62,7 @@ nav li * {
     float: right;
 }
 
+/* btnHeader - class for buttons are buttons placed in the top right of every page it's used in */
 .btnHeader{
     border:none;
     height:10vh;
@@ -71,6 +72,7 @@ nav li * {
     opacity: 70%;
 }
 
+/* hovering over .btnheader makes them fully opaque */
 .btnHeader:hover{
     opacity: 100%;
     cursor:pointer;
@@ -92,22 +94,20 @@ nav li * {
     vertical-align: top;
     }
 
-.headerDiv div{
-    display: inline-block;
-}
 
+/* logoimg is used for link to home page in top left of page's using it */
 #logoImg{
     height:100%;
     margin:0px;
     padding:0px;
     display: block;
-    opacity: 80%;
+    opacity: 0.8;
     box-shadow: black;
 
 }
-
+/* hover on logoImg make's it fully opaque and helps highlight it's being selecetd */
 #logoImg:hover{
-    opacity: 100%;
+    opacity: 1;
 }
 
 
