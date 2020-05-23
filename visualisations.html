@@ -97,6 +97,18 @@
             <input type="text" id="virginicaColor" placeholder="red">
             <!-- button to generate new trends -->
             <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+            <p>Height for d3 Visualisations</p>
+            <input type="text" id="d3Height" placeholder="475">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+            <p>Width for d3 Visualisations</p>
+            <input type="text" id="d3Width" placeholder="600">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+            <p>Transition Type for bar chart</p>
+            <input type="text" id="transition" placeholder="ease">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
         </div>
     </div>
 </body>
@@ -121,7 +133,12 @@
         let versicolorColorInput = document.getElementById("versicolorColor");
         //textField for selecting colour for virginica species 
         let virginicaColorInput = document.getElementById("virginicaColor");
-
+        //textField for setting d3 height
+        let d3HeightInput = document.getElementById("d3Height");
+        //textField for setting d3 width
+        let d3WidthInput = document.getElementById("d3Width");
+        //textField for setting transition type
+        let transitionInput = document.getElementById("transition");
         /*
             input variables from DOM
         */
