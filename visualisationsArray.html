@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="externalstylesheet.css">
+    <style>
+        
+        /* p tag text is all white, all p tag text in this page is in black background container*/
+        p{
+            color:white;
+            margin:0px;
+            margin-top: 10px;
+        }
+
+        /* d3SettingsContainerDiv - div for containing settings to change chart's settings */
+        #d3SettingsContainerDiv{
+            display: inline-block; 
+            position: relative;
+            border-radius: 5px;
+            background-color:#343d46;
+            padding: 0px 20px 10px 20px;
+        }
+
+        /* d3SettingsContainerHeaderDiv - div for containing the d3 settings header */
+        #d3SettingsContainerHeaderDiv{
+            position: relative;
+            border-radius: 5px; /* rounded corners */
+            background-color:white; /* white background*/
+            margin: 0px;
+        }
+
+        /* d3SettingsContainerHeader - p tag acting as header text */
+        #d3SettingsContainerHeader{
+            color:black;
+            text-align: center;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        #scatterTempText{
+            fill:white;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        }
+
+    </style>
+    <title>Generic Site Visualisation</title>
+</head>
+<body>
+    <!-- nav element used in place of div, as we only have one nav this is distinguished as our navigation bar where links to Home on the left and links to login, styling and visualisation pages on the right-->
+    <nav>
+        <!--Using an unordered list without style to contain links-->
+        <ul>
+            <!-- homeListItem get's floated to the left, contains image link to home page-->
+            <li id="homeListItem">
+                <a id="homeLink" href="home.html">
+                    <img id="logoImg" src="images/genericSiteLogo.png"/>
+                </a></li>
+            <!-- navListItemRight all get floated to the right, contains visualisation, styling and image buttons that navigate to respective pages-->
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
+        </ul>
+    </nav>
+
+    <!-- mainDiv used for containing rest of window below the navbar-->
+    <div class="mainDiv">
+        
+        <!-- Empty div for containing svg' made using d3-->
+        <div id="d3Container"></div>
+        <!-- d3SettingsContainerDiv holds all the settings for controlling d3 visualisations -->
+        <div id="d3SettingsContainerDiv">
+            <div id ="d3SettingsContainerHeaderDiv">
+                <p id="d3SettingsContainerHeader"> Settings for above chart's </p>
+            </div>
+            
+            <p>Temperature Monday</p>
+            <input type="text" id="mondayTemp" placeholder="5">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Temperature</button>
+            <p>Temperature Tuesday</p>
+            <input type="text" id="tuesdayTemp" placeholder="5">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Temperature</button>
+            <p>Temperature Wednesday</p>
+            <input type="text" id="wednesdayTemp" placeholder="5">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Temperature</button>
+            <p>Temperature Thursday</p>
+            <input type="text" id="thursdayTemp" placeholder="5">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Temperature</button>
+            <p>Temperature Friday</p>
+            <input type="text" id="fridayTemp" placeholder="5">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Temperature</button>
+            <p>Temperature Saturday</p>
+            <input type="text" id="saturdayTemp" placeholder="5">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Temperature</button>
+            <p>Temperature Sunday</p>
+            <input type="text" id="sundayTemp" placeholder="5">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Temperature</button>
+
+
+            <p>Species Colour For Versicolor</p>
+            <input type="text" id="versicolorColor" placeholder="green">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+            <p>Species Colour For Virginica</p>
+            <input type="text" id="virginicaColor" placeholder="red">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+            <p>Height for d3 Visualisations</p>
+            <input type="text" id="d3Height" placeholder="475">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Height of D3 SVG's</button>
+            <p>Width for d3 Visualisations</p>
+            <input type="text" id="d3Width" placeholder="600">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Width of D3 SVG's</button>
+            <p>Transition Type for bar chart</p>
+            <input type="text" id="transition" placeholder="ease">
+            <!-- button to generate new trends -->
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+        </div>
+    </div>
+</body>
+<!-- Bring in external js for d3 -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<!-- Scripting block -->
+<script>
+    
+    /*  This function get's called by every button above, could replace with a single button but like having button per field
+        takes no input's as get's the user inputs within the function
+    */
+    //populate myArray, will be updated by user input
+    let myArray = [{Day:"Monday", Temperature: 5},{Day:"Tuesday", Temperature: 7},{Day:"Wednesday", Temperature: 9},{Day:"Thursday", Temperature: 5},{Day:"Friday", Temperature: 16},{Day:"Saturday", Temperature: 20},{Day:"Sunday", Temperature: 23}]
+
+    let mondayTemp = document.getElementById("mondayTemp");
+    let tuesdayTemp = document.getElementById("tuesdayTemp");
+    let wednesdayTemp = document.getElementById("wednesdayTemp");
+    let thursdayTemp = document.getElementById("thursdayTemp");
+    let fridayTemp = document.getElementById("fridayTemp");
+    let saturdayTemp = document.getElementById("saturdayTemp");
+    let sundayTemp = document.getElementById("sundayTemp");
+
+    function generateTrend(){
+
+        /*
+            DOM variables
+        */
+        
+
+        if(mondayTemp.value !== "" && !isNaN(mondayTemp.value)){
+            myArray[0]['Temperature'] = Number(mondayTemp.value);
+
+        }
+        if(tuesdayTemp.value !== "" && !isNaN(tuesdayTemp.value)){
+            myArray[1]['Temperature'] = Number(tuesdayTemp.value);
+        }
+        if(wednesdayTemp.value !== "" && !isNaN(wednesdayTemp.value)){
+            myArray[2]['Temperature'] = Number(wednesdayTemp.value);
+        }
+        if(thursdayTemp.value !== "" && !isNaN(thursdayTemp.value)){
+            myArray[3]['Temperature'] = Number(thursdayTemp.value);
+        }
+        if(fridayTemp.value !== "" && !isNaN(fridayTemp.value)){
+            myArray[4]['Temperature'] = Number(fridayTemp.value);
+        }
+        if(saturdayTemp.value !== "" && !isNaN(saturdayTemp.value)){
+            myArray[5]['Temperature'] = Number(saturdayTemp.value);
+        }
+        if(sundayTemp.value !== "" && !isNaN(sundayTemp.value)){
+            myArray[6]['Temperature'] = Number(sundayTemp.value);
+        }
+
+        console.log(myArray)
+        //textField for setting d3 height
+        let d3HeightInput = document.getElementById("d3Height");
+        //textField for setting d3 width
+        let d3WidthInput = document.getElementById("d3Width");
+        //textField for setting transition type
+        let transitionInput = document.getElementById("transition");
+        /*
+            input variables from DOM
+        */
+        
+        let d3Height = d3HeightInput.value;
+        let d3Width = d3WidthInput.value;
+
+        if(d3Height === ""){
+            d3Height = 475;
+        }
+        if(d3Width === ""){
+            d3Width = 600;
+        }
+
+        /*
+            Cleanup of old d3
+        */
+        //if there's a preexisting svg remove contents then remove itself
+        svgContainer = d3.selectAll("svg")
+        svgContainer.selectAll("*").remove();
+        svgContainer.remove();
+
+
+        //wanted to seperate lodaing in data then working with that but as of v5 of d3 this is closest I can get, trying to use csvData directly results in "promise" being returned so need to use .then(function(data)) to work with actual csv data
+        //first with this I'm going to create a bar chart
+        data = myArray
+        //console.log(data)
+            //console for testing input data
+            //console.log(data);
+
+            /*
+                Chart Sizing variables
+            */
+            //larger area for the svg than the chart incase elements go partially outside
+            //setting height and width for svg area which chart will go within
+            var svgHeight = d3Height;
+            var svgWidth = d3Width;
+            //setting height and width for y and x scaling range and size of chart area
+            var height = svgHeight-75;
+            var width = svgWidth-75;
+            var barsteps = width/7 - 2;
+
+            //dataCount will be used to keep track of how many individual bar's will be needed
+            var dataCount = data.length;
+            var gap = 1; //gap of 1 pixel between bar's
+            //console.log(dataCount);
+
+            //svgBarChart is svg for containing bar chart
+            var svgBarChart = d3.select("#d3Container").append("svg")
+                .attr('width', svgWidth)
+                .attr('height', svgHeight);
+
+            //yScale shared across barchart and scatter svg's
+            var yScale = d3.scaleLinear()
+                .domain([0,d3.max(data, function(d){
+                    return (d['Temperature']);
+                })])
+                .range([height,0]);
+
+            //xScaleBar specific for bar chart as barchart x won't change and is scaleBand
+            var xScaleBar =d3.scaleBand()
+                .domain([0, 7])
+                .range([0,width]);
+
+            //sets the yAxis using the yScale
+            var yAxis = d3.axisLeft()
+                .scale(yScale);
+
+            //sets the X Axis for the BarChart
+            var xAxis = d3.axisBottom()
+                .scale(xScaleBar);
+
+
+            //var for rectangles for bar chart
+            var barRectangles = svgBarChart.selectAll('rect')
+                .data(data);
+
+            //for each data item append rectangle
+            barRectangles.enter()
+                .append('rect')
+                //fill transitions from white to specified colours by species
+                .attr("fill", "white")
+                    .attr('x', function(d, i){
+                        return 50 + (i*(width/dataCount))
+                    })
+                    .attr('y', function(d){
+                    return yScale((d['Temperature']));
+                    })
+                    .attr("width", 25)
+                    .transition()
+                    .delay(1000)
+                    .duration(2500)
+                //horizontal positioning where bar starts from
+                .attr('x', function(d, i){
+                    return 50 + (i*(width/dataCount));
+                    })
+                //vertical positioning 
+                .attr('y', function(d){
+                    return yScale((d['Temperature']));
+                })
+                //bar's are 2 pixels wide
+                .attr('width', barsteps)
+                //height is height of svg - the yscaled value of current param value
+                .attr('height', function(d){
+                    return height - yScale(d['Temperature']);
+                })
+                //colour bar's based on species colour
+                .attr('fill', function(d){
+                    return "red"
+                })
+                .attr("transform", "translate(0,5)");
+
+            barRectangles.on("mouseover", function() {
+                    d3.select(this).attr("fill", "red");
+                });
+                
+            //append group for yaxis
+            svgBarChart.append("g")
+                .attr("transform", "translate(48,5)")
+                .call(yAxis);
+
+            //append text label for yaxis parameter being used
+            svgBarChart.append("text")             
+              .attr("transform",
+                    "translate(20," + (height/2) + ") rotate(-90)")
+              .style("text-anchor", "middle")
+              .text('Temperature');
+
+            //append group for xaxis
+            svgBarChart.append("g")
+                .attr("transform", "translate(48," + (height+5) + ")")
+                .call(xAxis);
+
+            //append text label for the x axis
+            svgBarChart.append("text")             
+              .attr("transform",
+                    "translate("+(width/2)+"," + (height +25) + ")")
+              .style("text-anchor", "middle")
+              .text("Day of the week");
+
+          }
+
+    //generateTrend() get's called everytime on page open
+    generateTrend();
+
+
+</script>
+</html>
