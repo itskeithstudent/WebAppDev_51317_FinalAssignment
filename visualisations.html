@@ -35,6 +35,12 @@
             font-weight: bold;
             margin: 5px;
         }
+
+        #scatterTempText{
+            fill:white;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        }
+
     </style>
     <title>Generic Site Visualisation</title>
 </head>
@@ -100,11 +106,11 @@
             <p>Height for d3 Visualisations</p>
             <input type="text" id="d3Height" placeholder="475">
             <!-- button to generate new trends -->
-            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Height of D3 SVG's</button>
             <p>Width for d3 Visualisations</p>
             <input type="text" id="d3Width" placeholder="600">
             <!-- button to generate new trends -->
-            <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
+            <button id="generateTrendBtn" onclick="generateTrend()">Change Width of D3 SVG's</button>
             <p>Transition Type for bar chart</p>
             <input type="text" id="transition" placeholder="ease">
             <!-- button to generate new trends -->
@@ -153,6 +159,16 @@
         let versicolorColor = versicolorColorInput.value;
         let virginicaColor = virginicaColorInput.value;
 
+        let d3Height = d3HeightInput.value;
+        let d3Width = d3WidthInput.value;
+
+        if(d3Height === ""){
+            d3Height = 475;
+        }
+        if(d3Width === ""){
+            d3Width = 600;
+        }
+
         // create a list of keys to be used later for generating legend
         let keys = ["Setosa", "Versicolor", "Virginica"]
 
@@ -190,11 +206,11 @@
             */
             //larger area for the svg than the chart incase elements go partially outside
             //setting height and width for svg area which chart will go within
-            var svgHeight = 475;
-            var svgWidth = 600;
+            var svgHeight = d3Height;
+            var svgWidth = d3Width;
             //setting height and width for y and x scaling range and size of chart area
-            var height = 400;
-            var width = 525;
+            var height = svgHeight-75;
+            var width = svgWidth-75;
 
             //dataCount will be used to keep track of how many individual bar's will be needed
             var dataCount = data.length;
@@ -278,6 +294,10 @@
                 })
                 .attr("transform", "translate(0,5)");
 
+            barRectangles.on("mouseover", function() {
+                    d3.select(this).attr("fill", "red");
+                });
+                
             //append group for yaxis
             svgBarChart.append("g")
                 .attr("transform", "translate(48,5)")
@@ -316,7 +336,7 @@
                     if(d==='Setosa'){return setosaColor;}
                     else if(d==='Virginica'){return virginicaColor;}
                     else if(d==='Versicolor'){return versicolorColor;}
-                })
+                });
 
             // Add one dot in the legend for each name.
             svgBarChart.selectAll("mylabels")
@@ -355,7 +375,41 @@
                         if(d.species.includes("setosa")) {return setosaColor;}
                         else if (d.species.includes("virginica")) {return virginicaColor;}
                         else if (d.species.includes("versicolor")) {return versicolorColor;}
-                    });
+                    })
+                    .on("mouseover", function(d,i){
+                        d3.select(this).attr(
+                              "r", 6
+                            )
+                        .attr(
+                              "opacity", 0.5
+                            );
+                        // Specify where to put label of text
+                        svgScatter.append("text")
+                            .attr("id","scatterTempText")
+                            .attr("x", function() { return xScaleScatter(d[xParam]) - 30;} )
+                            .attr("y", function() { return yScale(d[yParam]) - 15;} )
+                            .style("background-color", "white")
+                            .text(function() {
+                                console.log(d.species)
+                                var scatterPointInfo = d.species + " : " + "(" + d[yParam] + "," + d[xParam] + ")"
+                                return scatterPointInfo
+                          //return [d[xParam], d[yParam]];  // Value of the text
+                            })
+                        
+                        console.log(d3.select(this))
+                            
+                    })
+                    .on("mouseout", function(d,i) {  
+                        d3.select(this).attr(
+                              "r", 3
+                            )    
+                        .attr(
+                              "opacity", 1
+                            )   
+                        console.log(d3.select("#scatterTempText").value)
+                        d3.select("#scatterTempText").remove();
+                    })
+                
 
             //append the yaxis line
             svgScatter.append("g")
