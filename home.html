@@ -75,22 +75,33 @@
         }
 
 
-
+        .slidesBottomTextDiv{
+            position: absolute;
+            bottom: 5%;
+            left: 2.5%;
+            padding:5px;
+            color:white;
+            background-color: black;
+       }
 
     </style>
     <title>Generic Site HomePage</title>
 </head>
 <body>
 
+    <!-- nav element used in place of div, as we only have one nav this is distinguished as our navigation bar where links to Home on the left and links to login, styling and visualisation pages on the right-->
     <nav>
+        <!--Using an unordered list without style to contain links-->
         <ul>
-          <li id="homeListItem">
+            <!-- homeListItem get's floated to the left, contains image link to home page-->
+            <li id="homeListItem">
                 <a id="homeLink" href="home.html">
                     <img id="logoImg" src="images/genericSiteLogo.png"/>
                 </a></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
+            <!-- navListItemRight all get floated to the right, contains visualisation, styling and image buttons that navigate to respective pages-->
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
         </ul>
     </nav>
 
@@ -98,29 +109,35 @@
     <div class="carouselContainer">
 
         <div class="slidesDiv">
-          <img src="images/capture.png" style="width:100%">
-          <div class="w3-display-bottomleft w3-large w3-container w3-padding-16 w3-black">
-            French Alps
+          <img src="images/genericSiteLogo.png"  style="width:100%">
+          <div class="slidesBottomTextDiv">
+            Site Logo
           </div>
         </div>
 
         <div class="slidesDiv">
-          <img src="images/genericSiteLogo.png" style="width:100%">
-          <div class="w3-display-bottomright w3-large w3-container w3-padding-16 w3-black">
-            Northern Lights
+          <img src="images/loginExample.png" style="width:100%">
+          <div class="slidesBottomTextDiv">
+            Example of Login Page
           </div>
         </div>
 
         <div class="slidesDiv">
-          <img src="images/capture.png" style="width:100%">
-          <div class="w3-display-topleft w3-large w3-container w3-padding-16 w3-black">
-            Beautiful Mountains
+          <img src="images/stylingExample.png" style="width:100%">
+          <div class="slidesBottomTextDiv">
+            Example of Styling Page
           </div>
         </div>
 
         <div class="slidesDiv">
+          <img src="images/stylingSettingsExample.png" style="width:100%">
+          <div class="slidesBottomTextDiv">
+            Example of Styling Page Settings
+          </div>
+        </div>
+        <div class="slidesDiv">
           <img src="images/capture.png" style="width:100%">
-          <div class="w3-display-topright w3-large w3-container w3-padding-16 w3-black">
+          <div class="slidesBottomTextDiv">
             The Rain Forest
           </div>
         </div>
@@ -132,7 +149,7 @@
     </div>
 
 
-
+<!-- mainDiv used for containing rest of window below the navbar-->
     <div class="mainDiv">
         <div class=row>
         <div class=linkContainer>
@@ -178,8 +195,6 @@
 
         //if current slide is greater than number of available slides set slide index to 1
         if (n > slideDiv.length) {
-            alert("Never")
-            console.log(slideDiv.length)
             slideIndex = 1
         }
         //if going backwards and slide it's looking for is 0 wrap around to last slide (reverse of above behaviour)

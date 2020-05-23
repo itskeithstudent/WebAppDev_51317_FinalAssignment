@@ -4,6 +4,8 @@
     <link rel="stylesheet" type="text/css" href="externalstylesheet.css">
     <style>
         
+
+        /* userTextContainer div for containing the text that will be changed by user input */
         #userTextContainer{
           position: relative;
           border-radius: 5px;
@@ -15,7 +17,7 @@
           height: auto;
         }
 
-        /* Div for containing all input's and buttons to change target text*/
+        /* customiseTextContainer div for containing all input's and buttons to change target text*/
         #customiseTextContainer {
           position: relative;
           border-radius: 5px;
@@ -33,8 +35,8 @@
           width: 50%;
         }
 
+        /* uniform select css as we only have one select tag*/
         select{
-
           width: 100%;
           padding: 12px;
           border: none;
@@ -44,23 +46,25 @@
           display: inline-block;
           font-size: 17px;        }
 
-        /* text area will take up 100% of available width and 10em height*/
+        /* text area will take up 100% of available width and 5em height*/
         textarea{
             width:100%;
             height:5em;
         }
 
+        /* row div's take up 100% of available width and align internal text to center, .doublecol and .singlecol appear within .row*/
         .row{
             width:100%;
             text-align: center;
         }
+        /* singleCol div's take up 100% of aavailable width as there will only be 1 singleCol per row*/
         .singleCol{
             width: 100%;
             margin:auto;
             padding: 0 50px;
             margin-top: 6px;
         }
-        /* Two columns will take up half the width and float, then clear to place them side by side */
+        /* doblecol div's take up half the width of the row as there will be 2 doublecol per row*/
         .doublecol {
           width: 49%;
           margin: auto;
@@ -69,52 +73,13 @@
           display: inline-block;
         }
 
-        #loginh2 {
-            text-align:center;
-            background-color: white;
-            color: #1abc9c;
-            width:25%;
-            border:2px solid #bababa;
-            display: block;
-            margin-left: auto;
-            margin-right: auto ;
-            border-radius: 15px 50px 30px; 
-        }
-
-        #signUpBtn{
-            background-color: #eca657;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            margin: 5px 0;
-            opacity: 0.85;
-            display: inline-block;
-            font-size: 17px;
-            line-height: 20px;
-            text-decoration: none;
-        }
-
-        #forgotPwdBtn{
-            background-color: #c695c6;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            margin: 5px 0;
-            opacity: 0.85;
-            display: inline-block;
-            font-size: 17px;
-            line-height: 20px;
-            text-decoration: none;
-        }
-
+        /* settingTitle is class of p tag to act as label's for the different settings */
         .settingTitle{
             color: white;
             margin-left: 2.5%;
             margin-bottom: 0%;
         }
-
+        /* settingTitle is class of p tag to act as value under label's for the different settings */
         .settingValue{
             color:#98c794;
             margin-left: 5%;
@@ -129,7 +94,7 @@
             padding-bottom: 1px;
         }
 
-        /* style inputs and buttons */
+        /* .inputs class for input tag's to make them take 100% of their parent container*/
         .inputs{
           width: 100%;
           padding: 12px;
@@ -141,6 +106,7 @@
           display: inline-block;
           font-size: 16px;
         }
+        /* .btn class appears under each of the .inputs*/
         .btn {
           width: 100%;
           padding: 0px;
@@ -165,81 +131,101 @@
             margin-top: 10px
         }
 
+        /* in case user enters a very long single series of char's in #updateTextArea*/
         #textBody{
             word-break: break-all;
             }
 
     </style>
-    <title>Generic Site HomePage</title>
+    <title>Generic Site Styling</title>
 </head>
 <body>
+    <!-- nav element used in place of div, as we only have one nav this is distinguished as our navigation bar where links to Home on the left and links to login, styling and visualisation pages on the right-->
     <nav>
+        <!--Using an unordered list without style to contain links-->
         <ul>
-          <li id="homeListItem">
+            <!-- homeListItem get's floated to the left, contains image link to home page-->
+            <li id="homeListItem">
                 <a id="homeLink" href="home.html">
                     <img id="logoImg" src="images/genericSiteLogo.png"/>
                 </a></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
+            <!-- navListItemRight all get floated to the right, contains visualisation, styling and image buttons that navigate to respective pages-->
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
         </ul>
     </nav>
 
-
+    <!-- mainDiv used for containing rest of window below the navbar-->
     <div class="mainDiv">
         <div id="userTextContainer">
             <p id="userEnteredText">Here is some sample Text, update below to replace with your preference.</p>
         </div>
+        <!-- customiseTextContainer div is container for everything that changes the #userEnteredText p tag text and it's styling -->
         <div id="customiseTextContainer">
-                <div class="row">
-                    <div class="singleCol">
-                        <textarea class="inputs" id="updateUserTextArea"></textarea>
-                        <button class="btn" id="updateText" onclick="changeText()">Update the above text</button>
-                    </div>
+            <!-- row div used to keep column div's in horizontal slices -->    
+            <div class="row">
+                <!-- single Col give's single veritcal slice within row-->
+                <div class="singleCol">
+                    <!-- textarea input is for taking user input to update text above -->
+                    <textarea class="inputs" id="updateUserTextArea"></textarea>
+                    <!-- updateText button calls function to replace above text with user input from textarea-->
+                    <button class="btn" id="updateText" onclick="changeText()">Update the above text</button>
                 </div>
-                <div class="row">
-                    <div class="doublecol">
-                        <input class="inputs" id="headerColourTextBox" type="text">
-                        <button class="btn" id="headerColourBtn" onclick="changeFontBackgroundColour()">Change Background Colour</button>
-                    </div>
-                    <div class="doublecol">
-                        <input class="inputs" id="fontSizeTextBox" type="text">
-                        <button class="btn" id="fontSizeBtn" onclick="changeFontSize()">Change Text Size</button>
-                    </div>
+            </div>
+            <!-- row div used to keep column div's in horizontal slices -->   
+            <div class="row">
+                <!-- doublecol Col used in pairs, gives two veritcal slices within row first doublecol-->
+                <div class="doublecol">
+                    <input class="inputs" id="headerColourTextBox" type="text">
+                    <button class="btn" id="headerColourBtn" onclick="changeFontBackgroundColour()">Change Background Colour</button>
                 </div>
-                <div class="row">
-                    <div class="doublecol">
-                        <input class="inputs" id="fontColourTextBox" type="text">
-                        <button class="btn" id="fontColourTextBtn" onclick="changeFontColour()">Change Font Colour</button>
-                    </div>
-                    <div class="doublecol">
-                          <select class="inputs" id=fontFamilySelector>
-                            <option style="font-family:tahoma">Tahoma</option>
-                            <option style="font-family:Arial">Arial</option>
-                            <option style="font-family:Comic Sans MS">Comic Sans MS</option>
-                            <option style="font-family:Fearless">Fearless</option>
-                          </select>
+                <!-- doublecol Col used in pairs, gives two veritcal slices within row second doublecol-->
+                <div class="doublecol">
+                    <input class="inputs" id="fontSizeTextBox" type="text">
+                    <button class="btn" id="fontSizeBtn" onclick="changeFontSize()">Change Text Size</button>
+                </div>
+            </div>
+            <!-- row div used to keep column div's in horizontal slices -->
+            <div class="row">
+                <!-- doublecol Col used in pairs, gives two veritcal slices within row first doublecol-->
+                <div class="doublecol">
+                    <input class="inputs" id="fontColourTextBox" type="text">
+                    <button class="btn" id="fontColourTextBtn" onclick="changeFontColour()">Change Font Colour</button>
+                </div>
+                <!-- doublecol Col used in pairs, gives two veritcal slices within row second doublecol-->
+                <div class="doublecol">
+                      <select class="inputs" id=fontFamilySelector>
+                        <option style="font-family:tahoma">Tahoma</option>
+                        <option style="font-family:Arial">Arial</option>
+                        <option style="font-family:Comic Sans MS">Comic Sans MS</option>
+                        <option style="font-family:Fearless">Fearless</option>
+                      </select>
 
-                        <button class="btn" id="fontStyleBtn" onclick="changeFontFam()">Change Font Family</button>
-                    </div>
+                    <button class="btn" id="fontStyleBtn" onclick="changeFontFam()">Change Font Family</button>
                 </div>
-                <div class="row">
-                    <div class="doublecol">
-                        <input class="inputs" id="paddingTextBox" type="text">
-                        <button class="btn" id="paddingBtn" onclick="changePadding()">Change Padding</button>
-                    </div>
-                    <div class="doublecol">
-                        <input class="inputs" id="marginTextBox" type="text">
-                        <button class="btn" id="marginBtn" onclick="changeMargin()">Change Margin</button>
-                    </div>
+            </div>
+            <!-- row div used to keep column div's in horizontal slices -->
+            <div class="row">
+                <!-- doublecol Col used in pairs, gives two veritcal slices within row first doublecol-->
+                <div class="doublecol">
+                    <input class="inputs" id="paddingTextBox" type="text">
+                    <button class="btn" id="paddingBtn" onclick="changePadding()">Change Padding</button>
                 </div>
-
-                <div class="row">
-                    <div class="singleCol">
-                        <button class="btn" id="resetToDefaultBtn" onclick="resetToDefault()">Reset above to default</button>
-                    </div>
+                <!-- doublecol Col used in pairs, gives two veritcal slices within row second doublecol-->
+                <div class="doublecol">
+                    <input class="inputs" id="marginTextBox" type="text">
+                    <button class="btn" id="marginBtn" onclick="changeMargin()">Change Margin</button>
                 </div>
-                <!-- This clear is necessary to prevent container div from placing last row in padding, I think this is a result of having the previous doublecol float which when cleared pushes the last row down into the div's padding -->
+            </div>
+            <!-- row div used to keep column div's in horizontal slices -->
+            <div class="row">
+                <!-- single Col give's single veritcal slice within row-->
+                <div class="singleCol">
+                    <button class="btn" id="resetToDefaultBtn" onclick="resetToDefault()">Reset above to default</button>
+                </div>
+            </div>
+            <!-- This clear is necessary to prevent container div from placing last row in padding, I think this is a result of having the previous doublecol float which when cleared pushes the last row down into the div's padding -->
         </div>
         <br>
         <!-- in this div, display settings for the user entered text, handy as a check to see what font etc. has been set -->
@@ -264,13 +250,17 @@
 </body>
 <script>
 
+    /* constants used for holding default values for text settings, to be used for resetting style settings and the text*/
     const defaultTextSize = 'initial'; //in actuality is 16px
     const defaultTextBackgroundColour =  'initial'; // transparent
     const defaultText = 'Here is some sample Text, update below to replace with your preference.'; //this was only var initial would not make sense for
     const defaultTextColour = "initial"; //black
     const defaultFontStyle = "initial"; //
     const defaultFontFamily = "tahoma";
+    const defaultMargin = "0px";
+    const defaultPadding = "16px";
 
+    /* Fields for user entry */
     let customisedTextField = document.getElementById("userEnteredText");
     let userEntryTextField = document.getElementById("updateUserTextArea");
     let userEntryFontBackgroundColourField = document.getElementById("headerColourTextBox");
@@ -280,6 +270,7 @@
     let userEntryPaddingField = document.getElementById("paddingTextBox");
     let userEntryMarginField = document.getElementById("marginTextBox");
 
+    /* Fields for showing applied user entry settings*/
     let userEnteredTextSettings = document.getElementById("textBody");
     let userEnteredFontSizeSettings = document.getElementById("textSizeSetting");
     let userEnteredFontColourSettings = document.getElementById("textColourSetting");
@@ -317,6 +308,7 @@
         tagStyleSettings();
     }
 
+    //changeFontFam function is used to change the font family based on user Input
     changeFontFam = function(){
         //userEntryFontFamilyDropDown.options gives us dict object, then using the .selectedIndex and .text we get the actual value selected
         var text = userEntryFontFamilyDropDown.options[userEntryFontFamilyDropDown.selectedIndex].text;
@@ -324,13 +316,15 @@
         tagStyleSettings();
     }
 
+    //changeMargin function used to change margin based on user input
     function changeMargin(){
         var userMargin = userEntryMarginField.value;
         console.log(userMargin)
         customisedTextField.style.margin = userMargin;
         tagStyleSettings();
     }
-
+    
+    //changePadding function used to change padding based on user input
     function changePadding(){
         var userPadding = userEntryPaddingField.value;
         console.log(userPadding)
@@ -338,20 +332,23 @@
         tagStyleSettings();
     }
 
-    //Function get's called on button press, Idea here is to reset all settings to their initial, handily there is a CSS property for that
+    //resetToDefault Function get's called on button press, Idea here is to reset all settings to their initial, handily there is a CSS property for that
     resetToDefault = function(){
+        //set text settings to default
         customisedTextField.innerHTML = defaultText;
         customisedTextField.style.fontSize = defaultTextSize;
         customisedTextField.style.backgroundColor = defaultTextBackgroundColour;
         customisedTextField.style.color = defaultTextColour;
         customisedTextField.fontStyle = defaultFontStyle;
         customisedTextField.style.fontFamily = defaultFontFamily;
+        customisedTextField.style.padding = defaultPadding;
+        customisedTextField.style.margin = defaultMargin;
+        //update the tag style settings text function
         tagStyleSettings();
     }
 
     //this function populates text information about what the text field's CSS properties are, get's called at end of every function that updates customisedTextField
     tagStyleSettings = function(){
-
         /* 
             had to set style var here and let it equal to getComputedStyle of the textField of interest,
             if using .innerHTML.style.color unless explicitly set in Javascript I would just get empty string.
@@ -359,7 +356,6 @@
             for that property using style['color'] etc.
         */
         let style = getComputedStyle(customisedTextField)
-        console.log(style)
 
         userEnteredTextSettings.innerHTML = customisedTextField.innerHTML;
         userEnteredFontSizeSettings.innerHTML = style['font-size'];

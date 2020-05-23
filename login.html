@@ -4,7 +4,8 @@
     <link rel="stylesheet" type="text/css" href="externalstylesheet.css">
     <style>
         
-        /* loginContainer - div for... formerly  #f2f2f2; */
+        /* loginContainer - div for holding login elements on screen;
+            has roudned corners */
         #loginContainer {
           position: relative;
           border-radius: 5px;
@@ -12,132 +13,149 @@
           padding: 20px 0 30px 0;
         }
 
-        /* style inputs and link buttons */
+        /* all inputs and buttons have same style */
         input,
         .btn {
           width: 100%;
           padding: 12px;
           border: none;
-          border-radius: 4px;
+          border-radius: 4px; /* rounded corners */
           margin: 5px 0;
-          opacity: 0.85;
-          display: inline-block;
+          opacity: 0.85; /* makes element more dull initially*/
+          display: inline-block; /* sllows adjacent elements makes elements only take needed space*/
           font-size: 17px;
           line-height: 20px;
-          text-decoration: none; /* remove underline from anchors */
+          text-decoration: none; /* remove underlines */
         }
 
+        /* When hovering over any button or input opacity it goes brigher*/
         input:hover,
         .btn:hover {
-          opacity: 1;
+          opacity: 1; /* when  hovered over element pops brighter*/
         }
 
-        /* submit button */
+        /* Submit button styling as we only have one no need to distinguish between */
         input[type=submit] {
-          background-color: #1abc9c;
+          background-color: #98c794;
           color: white;
-          cursor: pointer;
+          cursor: pointer; /* change cursor to pointer*/
         }
 
-        input[type=submit]:hover {
-          background-color: #008080;
-        }
 
-        /* Two columns will take up half the width and float, then clear to place them side by side */
+        /* Two columns will take up just under half the width to place divs side by side */
         .col {
-          width: 50%;
+          width: 49%;
           margin: auto;
-          padding: 0 50px;
+          padding: 25px 50px;
           margin-top: 6px;
-          float:left;
+          display: inline-block; /* inline-block let's elements fit on same line if there's enough space*/
+          vertical-align: top; /* if one div is smaller than the other they will still both be aligned towards the top*/
         }
-        #clear {
-            clear: both;
+
+        /* Div within col class for giving a green border and giving spacing*/
+        .col div#login{
+            padding:30px;
+            border: 2px #98c794 solid;
+            border-radius: 25px;
         }
+
+        /* Div within col class for giving a purple border and giving spacing*/
+        .col div#signup{
+            Padding:30px;
+            border: 2px #c695c6 solid;
+            border-radius: 25px;
+        }
+
+        /* header over login and sign up columns*/
         #loginh2 {
             text-align:center;
-            background-color: white;
-            color: #1abc9c;
+            background-color: transparent;
+            color:lightgrey;
             width:25%;
-            border:2px solid #bababa;
+            border-top: 4px solid #98c794;
+            border-left:2px solid #98c794;
+            border-bottom: 4px solid #c695c6;
+            border-right: 2px solid #c695c6;
             display: block;
             margin-left: auto;
-            margin-right: auto ;
-            border-radius: 15px 50px 30px; 
+            margin-right: auto;
+            border-radius: 5px; 
         }
 
+        /* span used for styling text within p tag for green text*/
+        span#login{
+            color:#98c794;
+        }
+        /* span used for styling text within p tag for purple text*/
+        span#signup{
+            color: #c695c6;
+        }
+
+        /* signUpBtn colour is purple and has a finger pointer cursor*/
         #signUpBtn{
-            background-color: #eca657;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            margin: 5px 0;
-            opacity: 0.85;
-            display: inline-block;
-            font-size: 17px;
-            line-height: 20px;
-            text-decoration: none;
-        }
-
-        #signUpBtn:hover{
-            cursor:pointer;
-            opacity: 1;
-        }
-        
-        #forgotPwdBtn{
             background-color: #c695c6;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            margin: 5px 0;
-            opacity: 0.85;
-            display: inline-block;
-            font-size: 17px;
-            line-height: 20px;
-            text-decoration: none;
+            cursor: pointer;
         }
 
-        #forgotPwdBtn:hover{
-            cursor:pointer;
-            opacity: 1;
+        /* signUpBtn colour is green and has a finger pointer cursor*/
+        #forgotPwdBtn{
+            background-color: #ec6066;
+            cursor: pointer;
         }
-
         
 
     </style>
-    <title>Generic Site HomePage</title>
+    <title>Generic Site Login</title>
 </head>
 <body>
+    <!-- nav element used in place of div, as we only have one nav this is distinguished as our navigation bar where links to Home on the left and links to login, styling and visualisation pages on the right-->
     <nav>
+        <!--Using an unordered list without style to contain links-->
         <ul>
-          <li id="homeListItem">
+            <!-- homeListItem get's floated to the left, contains image link to home page-->
+            <li id="homeListItem">
                 <a id="homeLink" href="home.html">
                     <img id="logoImg" src="images/genericSiteLogo.png"/>
                 </a></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
+            <!-- navListItemRight all get floated to the right, contains visualisation, styling and image buttons that navigate to respective pages-->
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
         </ul>
     </nav>
 
+    <!-- mainDiv used for containing rest of window below the navbar-->
     <div class="mainDiv">
+        <!-- loginContainer div is container for the login and signup elements-->
          <div id="loginContainer">
+            <!-- using row div container as I want everythin in one horizontal slice -->
             <div class="row">
-                    <h2 id="loginh2">Login below or signup</h2>
-              <div class="col">
-                <form id="login.form" action="home.html" onsubmit="return login()">
-                    <input id="useremail" type="email" name="useremail" placeholder="Email Address" oninvalid="InvalidEmailMessage(this);" 
-                   oninput="InvalidEmailMessage(this);" required>
-                    <input id="password" type="password" name="password" placeholder="Password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" minlength="4" oninvalid="InvalidPasswordMessage(this);" 
-                   oninput="InvalidPasswordMessage(this);" required>
-                    <input id="loginBtn" type="submit" value="Login" onclick="login()">
-                </form>
-              </div>
-              <div class="col">
-                    <button id="signUpBtn" onclick="signUp()">Sign Up</button>
-                    <button id="forgotPwdBtn" onclick="forgotPass()">Forgot Password</button>
+                <!-- at the top of row is a simple header-->
+                <h2 id="loginh2"><span id="login">Login</span> below or <span id="signup">Sign Up</span></h2>
+                <!-- col div container is used to have two vertical slices within my row container side by side, 1st col-->
+                <div class="col">
+                    <!-- login div is used to give padding between col and it's contents and to give coloured border, contains login form with form validation done by JS-->
+                    <div id="login">
+                        <!-- onsubmit returns true if correct credentials entered if true returned redirects to home page-->
+                        <form id="login.form" action="home.html" onsubmit="return login()">
+                            <!-- when user input's to this field call JS InvalidEmailMessage function to check field has valid entry, use of this as argument to function means it passes this field as DOM element-->
+                            <input id="useremail" type="email" name="useremail" placeholder="Email Address" oninvalid="InvalidEmailMessage(this);" 
+                           oninput="InvalidEmailMessage(this);" required>
+                           <!-- when user input's to this field call JS InvalidPasswordMessage function to check field has valid entry, use of this as argument to function means it passes this field as DOM element-->
+                            <input id="password" type="password" name="password" placeholder="Password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" minlength="4" oninvalid="InvalidPasswordMessage(this);" 
+                           oninput="InvalidPasswordMessage(this);" required>
+                           <!-- Submit button for form -->
+                            <input id="loginBtn" type="submit" value="Login">
+                        </form>
+                    </div>
+                </div>
+                <!-- col div container is used to have two vertical slices within my row container side by side, 2nd col-->
+                <div class="col">
+                <!-- signup div is used to give padding between col and it's contents and to give coloured border, contains signup button and forgot password button-->
+                <div id="signup">
+                    <button id="signUpBtn" class="btn" onclick="signUp()">Sign Up</button>
+                    <button id="forgotPwdBtn" class="btn" onclick="forgotPass()">Forgot Password</button>
+                </div>
               </div>
               <div id="clear"></div>
             </div>
@@ -145,55 +163,68 @@
 
     </div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
+
+    //working username and password, verified against user entry once passed validation checks
     let someUser = {"user@email.com" : "aA1!"};
-    
+    //fields where username and password are entered
+    let usernameField = document.getElementById("useremail")
+    let passwordField = document.getElementById("password")
+
+    //login function get's called on submit of form
     function login(){
-        username = document.getElementById("useremail").value;
-        password = document.getElementById("password").value;
+        //get values for username and password
+        var username = usernameField.value;
+        var password = passwordField.value;
+        //simple check off
         if( someUser[username] === password ){
+            //return true means we can perform form action and navigate to home.html
             return true;
         }
         else{
+            //on incorrect password alert login hint and return false so form doesn't perform action
             alert("Password was incorrect (Hint: Try user@email.com and aA1!)")
             return false;
         }
     }
     
+    //forgotPass function, simple function to just alert user that there is no forgotten password feature
     function forgotPass(){
         alert("Sorry to hear that! \nUnfortunately for you this feature hasn't been added yet.")
     }
     
+    //signUp function, simple function to just alert user that there is no signUp feature
     function signUp(){
         alert("We're not accepting new user's right now, try again some time!")
     }
 
+    //InvalidEmailMessage function for checking email validation
     function InvalidEmailMessage(textbox) { 
-  
+            //if email is blank set validity message
             if (textbox.value === '') { 
-                textbox.setCustomValidity 
-                      ('You must enter an email address'); 
+                textbox.setCustomValidity('You must enter an email address'); 
             } else if (textbox.validity.typeMismatch) { 
-                textbox.setCustomValidity 
-                      ('Please enter a valid email address (e.g. john@123.ie)'); 
+                //if wrong format for password entered
+                textbox.setCustomValidity('Please enter a valid email address (e.g. john@123.ie)'); 
             } else { 
+                //else give no validity message
                 textbox.setCustomValidity(''); 
             } 
-  
             return true; 
         } 
-
+    //InvalidPasswordMessage function for checking password validation
     function InvalidPasswordMessage(textbox){
         if (textbox.value === '') { 
-                textbox.setCustomValidity 
-                      ('You must enter a password'); 
+                //if blank password entered
+                textbox.setCustomValidity('You must enter a password'); 
             } else if (textbox.validity.tooShort) { 
-                textbox.setCustomValidity 
-                      ('Password was too short'); 
+                //if passsword too short
+                textbox.setCustomValidity('Password was too short'); 
             } else if (textbox.validity.patternMismatch){ 
+                //if don't match password pattern
                 textbox.setCustomValidity('Your Password must contain at least one of the following: lower case letter(a-z), upper case letter(A-Z), number(1-9) and a special character'); 
             } else { 
+                //else give no validity message
                 textbox.setCustomValidity(''); 
             } 
   

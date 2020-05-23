@@ -4,12 +4,13 @@
     <link rel="stylesheet" type="text/css" href="externalstylesheet.css">
     <style>
         
-        /* p tag text is all white */
+        /* p tag text is all white, all p tag text in this page is in black background container*/
         p{
             color:white;
             margin:0px;
             margin-top: 10px;
         }
+
         /* d3SettingsContainerDiv - div for containing settings to change chart's settings */
         #d3SettingsContainerDiv{
             display: inline-block; 
@@ -19,13 +20,15 @@
             padding: 0px 20px 10px 20px;
         }
 
+        /* d3SettingsContainerHeaderDiv - div for containing the d3 settings header */
         #d3SettingsContainerHeaderDiv{
             position: relative;
-            border-radius: 5px;
-            background-color:white;
+            border-radius: 5px; /* rounded corners */
+            background-color:white; /* white background*/
             margin: 0px;
         }
 
+        /* d3SettingsContainerHeader - p tag acting as header text */
         #d3SettingsContainerHeader{
             color:black;
             text-align: center;
@@ -33,61 +36,78 @@
             margin: 5px;
         }
     </style>
-    <title>Generic Site HomePage</title>
+    <title>Generic Site Visualisation</title>
 </head>
 <body>
+    <!-- nav element used in place of div, as we only have one nav this is distinguished as our navigation bar where links to Home on the left and links to login, styling and visualisation pages on the right-->
     <nav>
+        <!--Using an unordered list without style to contain links-->
         <ul>
-          <li id="homeListItem">
+            <!-- homeListItem get's floated to the left, contains image link to home page-->
+            <li id="homeListItem">
                 <a id="homeLink" href="home.html">
                     <img id="logoImg" src="images/genericSiteLogo.png"/>
                 </a></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
-          <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
+            <!-- navListItemRight all get floated to the right, contains visualisation, styling and image buttons that navigate to respective pages-->
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'visualisations.html'">Visualisation</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'styling.html'">Styling</button></li>
+            <li class="navListItemRight"><button class="btnHeader" onclick="window.location.href = 'login.html'">Login</button></li>
         </ul>
     </nav>
 
-
+    <!-- mainDiv used for containing rest of window below the navbar-->
     <div class="mainDiv">
         
+        <!-- Empty div for containing svg' made using d3-->
         <div id="d3Container"></div>
+        <!-- d3SettingsContainerDiv holds all the settings for controlling d3 visualisations -->
         <div id="d3SettingsContainerDiv">
             <div id ="d3SettingsContainerHeaderDiv">
                 <p id="d3SettingsContainerHeader"> Settings for above chart's </p>
             </div>
             <p>Parameter for the Y-Axis</p>
+            <!-- Dropdown for selecting Y axis on both bar chart and scatterplot -->
             <select id=selectYDropDown>
                 <option selected="true">petal_length</option>
                 <option>petal_width</option>
                 <option>sepal_length</option>
                 <option>sepal_width</option>
             </select>
+            <!-- button to generate new trends -->
             <button id="generateTrendBtn" onclick="generateTrend()">Change Y Axis Parameter</button>
             <p>Parameter for the X-Axis</p>
+            <!-- Dropdown for selecting X axis on both bar chart and scatterplot-->
             <select id=selectXDropDown>
                 <option>petal_length</option>
                 <option selected="true">petal_width</option>
                 <option>sepal_length</option>
                 <option>sepal_width</option>
             </select>
+            <!-- button to generate new trends -->
             <button id="generateTrendBtn" onclick="generateTrend()">Change X Axis Parameter</button>
             <p>Species Colour For Setosa</p>
             <input type="text" id="setosaColor" placeholder="blue">
+            <!-- button to generate new trends -->
             <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
             <p>Species Colour For Versicolor</p>
             <input type="text" id="versicolorColor" placeholder="green">
+            <!-- button to generate new trends -->
             <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
             <p>Species Colour For Virginica</p>
             <input type="text" id="virginicaColor" placeholder="red">
+            <!-- button to generate new trends -->
             <button id="generateTrendBtn" onclick="generateTrend()">Change Colour</button>
         </div>
     </div>
 </body>
-
+<!-- Bring in external js for d3 -->
 <script src="https://d3js.org/d3.v5.min.js"></script>
+<!-- Scripting block -->
 <script>
     
+    /*  This function get's called by every button above, could replace with a single button but like having button per field
+        takes no input's as get's the user inputs within the function
+    */
     function generateTrend(){
 
         /*
@@ -132,7 +152,7 @@
         }
 
         /*
-            Cleanup of old
+            Cleanup of old d3
         */
         //if there's a preexisting svg remove contents then remove itself
         svgContainer = d3.selectAll("svg")
@@ -200,30 +220,40 @@
             var xAxisScatter = d3.axisBottom()
                 .scale(xScaleScatter);
 
-            //
+            //var for rectangles for bar chart
             var barRectangles = svgBarChart.selectAll('rect')
                 .data(data);
 
+            //for each data item append rectangle
             barRectangles.enter()
                 .append('rect')
+                //fill transitions from white to specified colours by species
                 .attr("fill", "white")
-                    .attr('x', function(g, i){
-                        return 100;
+                    .attr('x', function(d, i){
+                        return 50 + (i*(width/dataCount))
                     })
-                    .attr("width", 2000)
+                    .attr('y', function(d){
+                    return yScale((d[yParam]));
+                    })
+                    .attr("width", 2)
                     .transition()
                     .delay(1000)
                     .duration(2500)
+                //horizontal positioning where bar starts from
                 .attr('x', function(d, i){
                     return 50 + (i*(width/dataCount));
                     })
+                //vertical positioning 
                 .attr('y', function(d){
                     return yScale((d[yParam]));
                 })
+                //bar's are 2 pixels wide
                 .attr('width', 2)
+                //height is height of svg - the yscaled value of current param value
                 .attr('height', function(d){
                     return height - yScale(d[yParam]);
                 })
+                //colour bar's based on species colour
                 .attr('fill', function(d){
                     if(d.species.includes("setosa")) {return setosaColor;}
                     else if (d.species.includes("virginica")) {return virginicaColor;}
@@ -231,21 +261,24 @@
                 })
                 .attr("transform", "translate(0,5)");
 
+            //append group for yaxis
             svgBarChart.append("g")
                 .attr("transform", "translate(48,5)")
                 .call(yAxis);
 
+            //append text label for yaxis parameter being used
             svgBarChart.append("text")             
               .attr("transform",
                     "translate(20," + (height/2) + ") rotate(-90)")
               .style("text-anchor", "middle")
               .text(yParam);
 
+            //append group for xaxis
             svgBarChart.append("g")
                 .attr("transform", "translate(48," + (height+5) + ")")
                 .call(xAxis);
 
-                // text label for the x axis
+            //append text label for the x axis
             svgBarChart.append("text")             
               .attr("transform",
                     "translate("+(width/2)+"," + (height +25) + ")")
@@ -256,6 +289,7 @@
             var scatterPoints = svgBarChart.selectAll("mydots")
               .data(keys);
 
+            // for each of the data points append a circle fo rmaking a scatterplot
             scatterPoints.enter()
               .append("circle")
                 .attr("cx", 90)
@@ -330,6 +364,8 @@
               .text(xParam);
             });
     }
+
+    //generateTrend() get's called everytime on page open
     generateTrend();
 
 
